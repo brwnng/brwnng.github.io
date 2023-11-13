@@ -70,6 +70,14 @@ html, body {
     margin-bottom: 15px; 
 }
 
+@font-face {
+    font-family: 'Basteleur';
+    src: url('font/Basteleur-Bold.ttf') format('truetype'),
+         url('font/Basteleur-Moonlight.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .content {
     text-align: center;
     color: #F1F0F4;
