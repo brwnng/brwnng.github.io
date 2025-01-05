@@ -1,0 +1,70 @@
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #020202 !important;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  ::selection {
+    background-color: rgb(106, 47, 7);
+    color: #fff;
+  }
+  ::-moz-selection {
+    background-color: rgb(106, 47, 7);
+    color: #fff;
+  }
+
+  .center-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .headline {
+    font-size: 15px;
+    color: #9A9A9A;
+    margin-bottom: 5px;
+    text-shadow: 0.3px 0.3px 0.3px #020202;
+  }
+  
+  .contact {
+    font-size: 15px;
+    color: #545454;
+    text-shadow: 0.3px 0.3px 0.3px #020202;
+    cursor: pointer;
+    transition: opacity 0.5s ease;
+  }
+  .contact:hover {
+    opacity: 0.8;
+  }
+  
+  .updated {
+    font-size: 15px;
+    color: #545454;
+    text-shadow: 0.3px 0.3px 0.3px #020202;
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: text;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+  
