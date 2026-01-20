@@ -1,0 +1,444 @@
+:root {
+  --bg: #c5d1e1;            /* change if needed */
+  --ink: #3a1212;
+  --footer-h: 34px;
+  --footer-logo-w: 140px;
+
+  /* footer animation vars */
+  --banner-h: var(--footer-h);
+  --banner-base: #3a1212;
+  --banner-base-rgb: 58 18 18;
+}
+
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg); /* ensures the page background persists */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Source Serif 4", "Source Serif Pro", serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+
+  /* prevent content hiding behind fixed footer */
+  padding-bottom: var(--footer-h);
+
+  /* requested */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.page {
+  min-height: 100vh;
+  display: grid;
+
+  /* Left takes remaining space, right is 44vw (min 640px) + 20px padding-right */
+  grid-template-columns: minmax(0, 1fr) minmax(660px, calc(44vw + 20px));
+}
+
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  width: 220px;
+  height: auto;
+
+  margin-left: 46px;
+  margin-top: 38px;
+  margin-bottom: 46px;
+
+  display: block;
+}
+
+.intro {
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 34px;
+
+  margin-left: 46px;
+  color: var(--ink);
+}
+
+.intro p {
+  margin: 0;
+}
+
+.intro em {
+  font-style: italic;
+}
+
+/* "instagram" and "get in touch" styling (eventual links) */
+/* Main-body interactive links (underline is because it's a link/button) */
+a.linkish,
+button.copy-link{
+  color: var(--ink);
+  font-family: "Source Serif 4", "Source Serif Pro", serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 7.5%;
+  text-underline-offset: 12.5%;
+  text-underline-position: from-font;
+
+  cursor: pointer;
+}
+
+/* No visited/clicked styling changes */
+a.linkish:visited{
+  color: var(--ink);
+}
+a.linkish:active,
+a.linkish:hover{
+  color: var(--ink);
+}
+
+/* Hover = italic (main-body only) */
+a.linkish:hover,
+button.copy-link:hover{
+  font-style: italic;
+}
+
+/* Make the button look exactly like text */
+button.copy-link{
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+}
+
+/* Avoid browser default focus rings changing the look */
+a.linkish:focus,
+a.linkish:focus-visible,
+button.copy-link:focus,
+button.copy-link:focus-visible{
+  outline: none;
+}
+
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: calc(var(--footer-h) + 20px);
+
+  /* important: don't let grid force it to shrink weirdly */
+  min-width: 0;
+}
+
+/* The fixed-proportion container */
+.hero-frame{
+  /* this becomes exactly 44vw (min 640px) because the column is +20px wider */
+  width: 100%;
+  height: calc(100vh - 20px - 20px - var(--footer-h));
+  overflow: hidden;
+}
+
+.hero-image{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+
+
+.sticky-footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
+  height: var(--footer-h);
+  min-height: var(--footer-h);
+  max-height: var(--footer-h);
+
+  background: var(--banner-base);
+
+  display: flex;
+  align-items: center;
+
+  /* left padding stays, and we add right padding so content doesn't touch edge */
+  padding: 0 20px 0 46px;
+
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Solid safe zone to prevent animation showing behind the logo + right margin area */
+.sticky-footer::marker { content: ""; } /* (no-op; harmless, ignore if you remove) */
+
+.sticky-footer::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+
+  /* keep your existing left fade exactly as you had */
+  background: linear-gradient(
+    to right,
+    rgb(var(--banner-base-rgb) / 1) 0%,
+    rgb(var(--banner-base-rgb) / 1) 60%,
+    rgb(var(--banner-base-rgb) / 0) 75%,
+    rgb(var(--banner-base-rgb) / 0) 100%
+  );
+}
+
+/* NEW: right-side shield (includes solid 20px at far right + optional fade near logo) */
+.sticky-footer .footer-shield{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  /* covers: logo width + its 20px margin + extra fade area */
+  width: calc(var(--footer-logo-w, 140px) + 20px + 48px);
+
+  pointer-events: none;
+  z-index: 5; /* above animation, below the logo itself */
+
+  background:
+    /* solid 20px strip on the far right */
+    linear-gradient(
+      to left,
+      rgb(var(--banner-base-rgb) / 1) 0 20px,
+      rgb(var(--banner-base-rgb) / 0) 20px
+    ),
+    /* OPTIONAL: fade the animation out as it approaches the logo */
+    linear-gradient(
+      to left,
+      rgb(var(--banner-base-rgb) / 1) 0%,
+      rgb(var(--banner-base-rgb) / 1) 35%,
+      rgb(var(--banner-base-rgb) / 0) 100%
+    );
+}
+
+
+.footer-logo{
+  position: relative;
+  z-index: 6;              /* above animation + overlays + text */
+
+  height: 100%;
+  width: auto;
+  display: block;
+
+  margin-left: auto;       /* push to right edge */
+}
+
+
+.footer-inner{
+  position: relative;
+  z-index: 4;
+
+  height: 100%;                 /* key: prevents accidental growth */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #c5d1e2;
+  font-family: "Source Serif 4", "Source Serif Pro", serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+
+/* background layer that holds the moving blocks */
+.footer-banner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Fade-to-base zone:
+   - fully base from 0% to 60%
+   - fades out between 60% and 75%
+   - no overlay from 75% to 100% */
+.sticky-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    rgb(var(--banner-base-rgb) / 1) 0%,
+    rgb(var(--banner-base-rgb) / 1) 60%,
+    rgb(var(--banner-base-rgb) / 0) 75%,
+    rgb(var(--banner-base-rgb) / 0) 100%
+  );
+}
+
+/* subtle grain/texture */
+.sticky-footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 0 2px,
+    rgba(0, 0, 0, 0.06) 2px 4px
+  );
+}
+
+.marquee {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  z-index: 1; /* below fade + grain overlays */
+}
+
+/* duplicated sequence twice; -50% = seamless loop */
+.marquee__inner {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+  animation: bannerScroll 120s linear infinite;
+}
+
+@keyframes bannerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.banner-block {
+  position: relative;
+  height: 100%;
+  flex: 0 0 auto;
+  transition: background-color 6s ease, width 6s ease;
+}
+
+/* slight vertical shading per block for depth */
+.banner-block::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.10;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0,0,0,0.25));
+  mix-blend-mode: soft-light;
+}
+
+/* foreground footer content must sit above the animation */
+.footer-inner {
+  position: relative;
+  z-index: 4;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #c5d1e2;
+  font-family: "Source Serif 4", "Source Serif Pro", serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.footer-ig{
+  color: #c5d1e2;
+  text-decoration: none;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.footer-ig:hover,
+.footer-ig:active,
+.footer-ig:visited{
+  color: #c5d1e2;
+  text-decoration: none;
+  font-style: normal;
+}
+.copy-wrap{
+  position: relative;
+  display: inline-block;
+}
+
+.copy-tooltip{
+  position: absolute;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+
+  left: 0;
+  top: calc(100% + 8px);
+
+  background: #3a1212;
+  color: #c5d1e2;
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-family: "Source Serif 4", "Source Serif Pro", serif;
+  font-size: 13px;
+  line-height: 18px;
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+
+  pointer-events: none;
+}
+
+.copy-tooltip.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.footer-linkish,
+.footer-dot,
+.footer-copy {
+  color: #c5d1e2;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__inner { animation: none; }
+  .banner-block { transition: none; }
+}
+
+
+.footer-linkish,
+.footer-dot,
+.footer-copy {
+  color: #c5d1e2;
+}
