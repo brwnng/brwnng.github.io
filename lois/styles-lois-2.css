@@ -17,7 +17,7 @@
   --bp-pre-mobile: 1180px;
   --bp-mobile: 820px;
 
-  /* Fade specs */
+  /* Fade specs (desktop) */
   --top-fade-solid: 94px;
   --top-fade-ramp: 44px; /* transition to 0 opacity */
   --bottom-fade-h: 74px; /* from top of footer up to 0 opacity */
@@ -61,7 +61,7 @@ body {
   background: var(--bg);
 }
 
-/* Entire site does not scroll; only body text scrolls */
+/* Entire site does not scroll; only body text scrolls (desktop) */
 body {
   margin: 0;
   background: var(--bg);
@@ -70,6 +70,11 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile-only header (hidden on desktop) */
+.mobile-header {
+  display: none;
 }
 
 .page {
@@ -126,7 +131,7 @@ body {
   );
 }
 
-/* LOGO: fixed in viewport, does not scroll */
+/* LOGO: fixed in viewport, does not scroll (desktop) */
 .logo {
   position: fixed;
   left: 46px; /* x = 46 */
@@ -139,7 +144,7 @@ body {
   z-index: 30; /* above fades + text */
 }
 
-/* BODY TEXT: the only scrollable area */
+/* BODY TEXT: the only scrollable area (desktop) */
 .intro {
   position: relative;
   height: 100vh;
@@ -199,7 +204,7 @@ body {
 /* Main-body interactive links:
    - lighter underline
    - closer to text
-   - skips descenders/loops (skip-ink)
+   - skips descenders/loops where supported (skip-ink)
 */
 a.linkish,
 button.copy-link {
@@ -208,17 +213,12 @@ button.copy-link {
 
   text-decoration-line: underline;
   text-decoration-style: solid;
-
-  /* ensure underline avoids cutting through glyphs where supported */
   text-decoration-skip-ink: auto;
 
-  /* slightly thinner underline */
   text-decoration-thickness: 0.045em;
-
-  /* bring underline closer to the text */
   text-underline-offset: 0.11em;
-
   text-underline-position: from-font;
+
   cursor: pointer;
 }
 
@@ -249,8 +249,6 @@ button.copy-link {
   padding: 0;
   margin: 0;
   appearance: none;
-
-  /* ensure no UA styling applies */
   text-decoration-color: currentColor;
 }
 
@@ -294,7 +292,7 @@ button.copy-link:focus-visible {
   object-position: center;
 }
 
-/* FOOTER (unchanged text; fixed) */
+/* FOOTER (desktop) */
 .sticky-footer {
   position: fixed;
   left: 0;
@@ -472,7 +470,7 @@ button.copy-link:focus-visible {
 }
 
 /* -------- Responsive behaviour (prep for eventual mobile breakpoint) -------- */
-/* Prevent overlap: at narrower widths, pin image to the right and constrain text width accordingly. */
+/* Prevent overlap on narrower desktop/tablet widths */
 @media (max-width: 1180px) {
   .page {
     display: block;
@@ -503,12 +501,143 @@ button.copy-link:focus-visible {
   }
 }
 
-/* Placeholder for future mobile breakpoint where layout can switch to a single column. */
-/*
+/* -------------------- MOBILE LAYOUT (after breakpoint) -------------------- */
 @media (max-width: 820px) {
-  // future mobile layout rules go here
+  /* Mobile: page scrolls normally */
+  body {
+    overflow: auto;
+  }
+
+  /* Remove footer entirely */
+  .sticky-footer {
+    display: none !important;
+  }
+
+  /* No gradients on mobile */
+  .left::before,
+  .left::after {
+    display: none !important;
+  }
+
+  /* Show mobile header */
+  .mobile-header {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+
+  .mobile-logo {
+    display: block;
+    margin-left: 18px;
+    margin-top: 18px;
+    height: 16px;
+    width: auto; /* dynamic width */
+  }
+
+  .mobile-nav {
+    position: absolute;
+    top: 19px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-link {
+    font-family: "Tenopate", "Tenopate Salt 9", "Source Serif 4", serif;
+    font-size: 14px;
+    line-height: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mobile-link:visited,
+  .mobile-link:hover,
+  .mobile-link:active {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  /* Switch to single column, normal flow */
+  .page {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Ensure the image appears before the body text */
+  .right {
+    order: 1;
+  }
+  .left {
+    order: 2;
+  }
+
+  .left {
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Hide desktop logo (mobile uses logo-4 in header) */
+  .logo {
+    display: none;
+    position: static;
+  }
+
+  /* Image: normal flow, margins 18px left/right, 20px below header */
+  .right {
+    position: static;
+    height: auto;
+    padding: 0;
+
+    margin-top: 20px;  /* margin between logo/header and image */
+    margin-left: 18px;
+    margin-right: 18px;
+
+    z-index: 1;
+  }
+
+  .hero-frame {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto; /* dynamic height, preserves aspect ratio */
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Text: normal flow, 30px beneath image */
+  .intro {
+    height: auto;
+    overflow: visible;
+
+    width: auto;
+    max-width: none;
+
+    margin: 30px 18px 0 18px;
+    padding: 0 0 28px 0;
+
+    gap: 1.6rem;
+
+    font-size: 1.75rem; /* 28px */
+    line-height: 2rem;  /* 32px */
+
+    color: var(--ink);
+
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
+  }
+
+  .intro::-webkit-scrollbar {
+    width: initial;
+    height: initial;
+  }
 }
-*/
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

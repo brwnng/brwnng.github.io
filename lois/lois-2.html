@@ -17,13 +17,28 @@
       rel="stylesheet"
     />
 
-    <!-- v2 stylesheet -->
     <link rel="stylesheet" href="styles-lois-2.css" />
   </head>
 
   <body>
+    <!-- Mobile-only header (shown only after breakpoint) -->
+    <header class="mobile-header" aria-label="Site header">
+      <img class="mobile-logo" src="img/logo-4.png" alt="Lois Hannah Interiors" />
+      <nav class="mobile-nav" aria-label="Quick links">
+        <a
+          class="mobile-link"
+          href="https://www.instagram.com/loishannahinteriors"
+          target="_blank"
+          rel="noopener"
+          >Instagram</a
+        >
+        <a class="mobile-link" href="mailto:lois@loishannah.co.uk">E-mail</a>
+      </nav>
+    </header>
+
     <main class="page">
       <section class="left">
+        <!-- Desktop logo (fixed on desktop only) -->
         <img class="logo" src="img/logo-1.png" alt="Lois Hannah Interiors" />
 
         <div class="intro">
@@ -90,7 +105,6 @@
       <img class="footer-logo" src="img/logo-2.png" alt="" />
     </footer>
 
-    <!-- v2 script -->
     <script src="lois-2.js"></script>
   </body>
 </html>
