@@ -1,29 +1,19 @@
-/* styles-lois-2.css */
 :root {
   --bg: #c5d1e2;
   --bg-rgb: 197 209 226;
-
   --ink: #3a1212;
-
   --footer-h: 34px;
   --footer-logo-w: 140px;
-
-  /* footer animation vars */
   --banner-h: var(--footer-h);
   --banner-base: #3a1212;
   --banner-base-rgb: 58 18 18;
-
-  /* Prep for future breakpoint work */
   --bp-pre-mobile: 1180px;
   --bp-mobile: 820px;
-
-  /* Fade specs (desktop) */
   --top-fade-solid: 94px;
-  --top-fade-ramp: 44px; /* transition to 0 opacity */
-  --bottom-fade-h: 74px; /* from top of footer up to 0 opacity */
+  --top-fade-ramp: 44px;
+  --bottom-fade-h: 74px;
 }
 
-/* Selection styling */
 ::selection {
   background: #3a1212;
   color: #acb9c2;
@@ -33,7 +23,6 @@
   color: #acb9c2;
 }
 
-/* Local Tenopate fonts (folder sits alongside these files) */
 @font-face {
   font-family: "Tenopate";
   src: url("tenopate-font/tenopate.otf") format("opentype");
@@ -61,18 +50,15 @@ body {
   background: var(--bg);
 }
 
-/* Entire site does not scroll; only body text scrolls (desktop) */
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   overflow: hidden;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Mobile-only header (hidden on desktop) */
 .mobile-header {
   display: none;
 }
@@ -80,30 +66,24 @@ body {
 .page {
   height: 100vh;
   display: grid;
-
-  /* Left takes remaining space, right is 44vw with a soft min so it stays responsive */
   grid-template-columns: minmax(0, 1fr) minmax(480px, calc(44vw + 20px));
 }
 
-/* LEFT (logo fixed, text scrolls) */
 .left {
   position: relative;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Top fade (text fades behind logo area) */
 .left::before {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-
   height: calc(var(--top-fade-solid) + var(--top-fade-ramp));
   pointer-events: none;
-
-  z-index: 20; /* above scrolling text, below logo */
+  z-index: 20;
   background: linear-gradient(
     to bottom,
     rgb(var(--bg-rgb) / 1) 0,
@@ -112,76 +92,49 @@ body {
   );
 }
 
-/* Bottom fade just above footer (text fades in toward footer) */
 .left::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: var(--footer-h);
-
   height: var(--bottom-fade-h);
   pointer-events: none;
-
-  z-index: 20; /* above scrolling text */
-  background: linear-gradient(
-    to top,
-    rgb(var(--bg-rgb) / 1) 0,
-    rgb(var(--bg-rgb) / 0) var(--bottom-fade-h)
-  );
+  z-index: 20;
+  background: linear-gradient(to top, rgb(var(--bg-rgb) / 1) 0, rgb(var(--bg-rgb) / 0) var(--bottom-fade-h));
 }
 
-/* LOGO: fixed in viewport, does not scroll (desktop) */
 .logo {
   position: fixed;
-  left: 46px; /* x = 46 */
-  top: 38px; /* y = 38 */
-
+  left: 46px;
+  top: 38px;
   height: 54px;
-  width: auto; /* keep aspect ratio */
+  width: auto;
   display: block;
-
-  z-index: 30; /* above fades + text */
+  z-index: 30;
 }
 
-/* BODY TEXT: the only scrollable area (desktop) */
 .intro {
   position: relative;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-
-  /* align with logo x */
   margin-left: 46px;
-
-  /* body text container width = 46% viewport */
   width: 46vw;
-
-  /* 38px gap below logo:
-     top padding = logo y (38) + logo height (54) + gap (38) = 130px */
   padding-top: 130px;
-
-  /* allow content to scroll behind bottom fade + footer without clipping */
   padding-bottom: calc(var(--footer-h) + var(--bottom-fade-h) + 40px);
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2.2rem;
-
   font-family: "Tenopate", "Tenopate Salt 9", "Source Serif 4", serif;
-
-  /* 38px in rem, 40px line-height in rem */
-  font-size: 2.375rem; /* 38/16 */
-  line-height: 2.5rem; /* 40/16 */
+  font-size: 2.375rem;
+  line-height: 2.5rem;
   font-weight: 400;
-
-  /* Make scrollbar invisible cross-browser */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge Legacy */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* WebKit scrollbar hiding (Chrome/Safari/Edge) */
 .intro::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -201,24 +154,18 @@ body {
   font-style: italic;
 }
 
-/* Main-body interactive links */
-a.linkish,
-button.copy-link {
+a.linkish {
   font: inherit;
   color: var(--ink);
-
   text-decoration-line: underline;
   text-decoration-style: solid;
   text-decoration-skip-ink: auto;
-
   text-decoration-thickness: 0.045em;
   text-underline-offset: 0.11em;
   text-underline-position: from-font;
-
   cursor: pointer;
 }
 
-/* Force no "visited" styling anywhere */
 a.linkish:visited,
 a.linkish:visited:hover,
 a.linkish:visited:active {
@@ -226,52 +173,31 @@ a.linkish:visited:active {
   text-decoration-color: currentColor;
 }
 
-/* No clicked/active colour changes */
 a.linkish:active,
 a.linkish:hover {
   color: var(--ink);
 }
 
-/* Hover = italic (main-body only) */
-a.linkish:hover,
-button.copy-link:hover {
+a.linkish:hover {
   font-style: italic;
 }
 
-/* Make the button look exactly like text */
-button.copy-link {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  appearance: none;
-  text-decoration-color: currentColor;
-}
-
-/* Avoid browser default focus rings changing the look */
 a.linkish:focus,
-a.linkish:focus-visible,
-button.copy-link:focus,
-button.copy-link:focus-visible {
+a.linkish:focus-visible {
   outline: none;
 }
 
-/* RIGHT (image should sit above fades) */
 .right {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-
   height: 100vh;
-
   padding-top: 20px;
   padding-right: 20px;
   padding-bottom: calc(var(--footer-h) + 20px);
-
   min-width: 0;
-
   position: relative;
-  z-index: 50; /* ensure image is never visually “faded” by overlays */
+  z-index: 50;
 }
 
 .hero-frame {
@@ -288,29 +214,22 @@ button.copy-link:focus-visible {
   object-position: center;
 }
 
-/* FOOTER (desktop) */
 .sticky-footer {
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-
   height: var(--footer-h);
   min-height: var(--footer-h);
   max-height: var(--footer-h);
-
   background: var(--banner-base);
-
   display: flex;
   align-items: center;
-
   padding: 0 20px 0 46px;
-
   overflow: hidden;
   z-index: 9999;
 }
 
-/* Fade-to-base zone in footer */
 .sticky-footer::before {
   content: "";
   position: absolute;
@@ -326,7 +245,6 @@ button.copy-link:focus-visible {
   );
 }
 
-/* subtle grain/texture */
 .sticky-footer::after {
   content: "";
   position: absolute;
@@ -335,59 +253,38 @@ button.copy-link:focus-visible {
   z-index: 3;
   opacity: 0.12;
   mix-blend-mode: overlay;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.06) 0 2px,
-    rgba(0, 0, 0, 0.06) 2px 4px
-  );
+  background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 2px, rgba(0, 0, 0, 0.06) 2px 4px);
 }
 
-/* right-side shield to keep animation off the logo area */
 .sticky-footer .footer-shield {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
-
   width: calc(var(--footer-logo-w, 140px) + 20px + 48px);
-
   pointer-events: none;
   z-index: 5;
-
   background:
-    linear-gradient(
-      to left,
-      rgb(var(--banner-base-rgb) / 1) 0 20px,
-      rgb(var(--banner-base-rgb) / 0) 20px
-    ),
-    linear-gradient(
-      to left,
-      rgb(var(--banner-base-rgb) / 1) 0%,
-      rgb(var(--banner-base-rgb) / 1) 35%,
-      rgb(var(--banner-base-rgb) / 0) 100%
-    );
+    linear-gradient(to left, rgb(var(--banner-base-rgb) / 1) 0 20px, rgb(var(--banner-base-rgb) / 0) 20px),
+    linear-gradient(to left, rgb(var(--banner-base-rgb) / 1) 0%, rgb(var(--banner-base-rgb) / 1) 35%, rgb(var(--banner-base-rgb) / 0) 100%);
 }
 
 .footer-logo {
   position: relative;
   z-index: 6;
-
   height: 100%;
   width: auto;
   display: block;
-
   margin-left: auto;
 }
 
 .footer-inner {
   position: relative;
   z-index: 4;
-
   height: 100%;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-
   color: #c5d1e2;
   font-family: "Source Serif 4", "Source Serif Pro", serif;
   font-size: 15px;
@@ -395,7 +292,6 @@ button.copy-link:focus-visible {
   line-height: 21px;
 }
 
-/* moving blocks layer */
 .footer-banner {
   position: absolute;
   inset: 0;
@@ -439,7 +335,7 @@ button.copy-link:focus-visible {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.10;
+  opacity: 0.1;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25));
   mix-blend-mode: soft-light;
 }
@@ -459,81 +355,77 @@ button.copy-link:focus-visible {
   font-style: normal;
 }
 
-.footer-linkish,
+.footer-email {
+  color: #c5d1e2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footer-email:hover,
+.footer-email:active,
+.footer-email:visited {
+  color: #c5d1e2;
+  text-decoration: none;
+}
+
 .footer-dot,
 .footer-copy {
   color: #c5d1e2;
 }
 
-/* -------- Responsive behaviour (prep for eventual mobile breakpoint) -------- */
-/* Prevent overlap on narrower desktop/tablet widths */
 @media (max-width: 1180px) {
   .page {
     display: block;
   }
-
   .right {
     position: fixed;
     top: 20px;
     right: 20px;
     bottom: calc(var(--footer-h) + 20px);
-
     width: min(44vw, 520px);
     height: auto;
-
     padding: 0;
     z-index: 50;
   }
-
   .hero-frame {
     width: 100%;
     height: 100%;
   }
-
-  /* Keep text from running under the fixed image */
   .intro {
     width: calc(100vw - (min(44vw, 520px) + 46px + 80px));
     max-width: 700px;
   }
 }
 
-/* -------------------- MOBILE LAYOUT (after breakpoint) -------------------- */
 @media (max-width: 820px) {
-  /* Mobile: page scrolls normally */
   body {
     overflow: auto;
   }
 
-  /* Remove footer entirely */
   .sticky-footer {
     display: none !important;
   }
 
-  /* No gradients on mobile */
   .left::before,
   .left::after {
     display: none !important;
   }
 
-  /* Show mobile header */
   .mobile-header {
-    display: block;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 0 18px;
     width: 100%;
   }
 
   .mobile-logo {
+    height: 20px;
+    width: auto;
     display: block;
-    margin-left: 18px;
-    margin-top: 18px;
-    height: 16px;
-    width: auto; /* dynamic width */
   }
 
   .mobile-nav {
-    position: absolute;
-    top: 19px;
-    right: 18px;
     display: inline-flex;
     align-items: center;
     gap: 12px;
@@ -541,8 +433,8 @@ button.copy-link:focus-visible {
 
   .mobile-link {
     font-family: "Tenopate", "Tenopate Salt 9", "Source Serif 4", serif;
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 18px;
+    line-height: 18px;
     color: var(--ink);
     text-decoration: none;
     cursor: pointer;
@@ -555,14 +447,12 @@ button.copy-link:focus-visible {
     text-decoration: none;
   }
 
-  /* Switch to single column, normal flow */
   .page {
     display: flex;
     flex-direction: column;
     height: auto;
   }
 
-  /* Ensure the image appears before the body text */
   .right {
     order: 1;
   }
@@ -575,29 +465,21 @@ button.copy-link:focus-visible {
     overflow: visible;
   }
 
-  /* Hide desktop logo (mobile uses logo-4 in header) */
   .logo {
     display: none;
     position: static;
   }
 
-  /* Image: normal flow, full available width (minus 18px margins), 20px below header */
   .right {
     position: static;
     top: auto;
     right: auto;
     bottom: auto;
-
-    width: auto;        /* IMPORTANT: overrides the 1180px rule */
-    max-width: none;    /* IMPORTANT: ensure no inherited constraint */
-
+    width: auto;
+    max-width: none;
     height: auto;
     padding: 0;
-
-    margin-top: 20px;
-    margin-left: 18px;
-    margin-right: 18px;
-
+    margin: 20px 18px 0 18px;
     z-index: 1;
   }
 
@@ -609,29 +491,22 @@ button.copy-link:focus-visible {
 
   .hero-image {
     width: 100%;
-    height: auto; /* dynamic height, preserves aspect ratio */
+    height: auto;
     display: block;
     object-fit: contain;
   }
 
-  /* Text: normal flow, 30px beneath image */
   .intro {
     height: auto;
     overflow: visible;
-
     width: auto;
     max-width: none;
-
     margin: 30px 18px 0 18px;
     padding: 0 0 28px 0;
-
     gap: 1.6rem;
-
-    font-size: 1.75rem; /* 28px */
-    line-height: 2rem;  /* 32px */
-
+    font-size: 1.75rem;
+    line-height: 2rem;
     color: var(--ink);
-
     scrollbar-width: auto;
     -ms-overflow-style: auto;
   }
@@ -642,7 +517,6 @@ button.copy-link:focus-visible {
   }
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .marquee__inner {
     animation: none;

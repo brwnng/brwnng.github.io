@@ -1,4 +1,3 @@
-// lois-2.js
 (() => {
   const inner = document.getElementById("footer-marquee-inner");
   if (!inner) return;
@@ -78,9 +77,7 @@
   let pairs = [];
 
   function hsla({ hue, sat, lit, a }) {
-    return `hsla(${hue.toFixed(1)}, ${sat.toFixed(1)}%, ${lit.toFixed(
-      1
-    )}%, ${a.toFixed(3)})`;
+    return `hsla(${hue.toFixed(1)}, ${sat.toFixed(1)}%, ${lit.toFixed(1)}%, ${a.toFixed(3)})`;
   }
 
   function rebuild() {
@@ -104,8 +101,7 @@
     }
   }
 
-  const reduceMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
   function mutateOne(i) {
     const [a, b] = pairs[i];
@@ -147,36 +143,4 @@
 
   rebuild();
   startMorphing();
-})();
-
-(() => {
-  const btn = document.querySelector(".copy-link");
-  if (!btn) return;
-
-  async function copyToClipboard(text) {
-    // Modern API
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return;
-    }
-
-    // Fallback
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.setAttribute("readonly", "");
-    ta.style.position = "fixed";
-    ta.style.left = "-9999px";
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-  }
-
-  btn.addEventListener("click", async () => {
-    try {
-      await copyToClipboard("bnbrw@proton.me");
-    } catch {
-      // no-op (clipboard may be blocked)
-    }
-  });
 })();
