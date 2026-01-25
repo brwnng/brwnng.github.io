@@ -201,11 +201,7 @@ body {
   font-style: italic;
 }
 
-/* Main-body interactive links:
-   - lighter underline
-   - closer to text
-   - skips descenders/loops where supported (skip-ink)
-*/
+/* Main-body interactive links */
 a.linkish,
 button.copy-link {
   font: inherit;
@@ -585,13 +581,20 @@ button.copy-link:focus-visible {
     position: static;
   }
 
-  /* Image: normal flow, margins 18px left/right, 20px below header */
+  /* Image: normal flow, full available width (minus 18px margins), 20px below header */
   .right {
     position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+
+    width: auto;        /* IMPORTANT: overrides the 1180px rule */
+    max-width: none;    /* IMPORTANT: ensure no inherited constraint */
+
     height: auto;
     padding: 0;
 
-    margin-top: 20px;  /* margin between logo/header and image */
+    margin-top: 20px;
     margin-left: 18px;
     margin-right: 18px;
 
