@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuItems = document.querySelectorAll('.menu-item');
 
     function loadSVG(svgFile) {
-        const svgPath = `assets/${svgFile}`;
+        const svgPath = `./assets/${svgFile}`;
 
         svgContainer.innerHTML = '';
 
