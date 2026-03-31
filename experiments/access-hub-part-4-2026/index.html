@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Access Hub Part 4 (2026) - Experiment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #12133f;
+      --bg-left: #e0dde7;
+      --bg-mid: #c7addf;
+      --bg-right: #b08add;
+      --glow: rgba(178, 120, 240, 0.5);
+      --bar-purple-start: #9f33e8;
+      --bar-purple-end: #8a38df;
+      --bar-teal-start: #6cb8ca;
+      --bar-teal-end: #53a6bb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(62% 48% at 54% 74%, var(--glow) 0%, rgba(178, 120, 240, 0) 74%),
+        linear-gradient(102deg, var(--bg-left) 0%, var(--bg-mid) 50%, var(--bg-right) 100%);
+      color: var(--ink);
+    }
+
+    #viewport {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    #artboard {
+      width: 1600px;
+      height: 900px;
+      position: relative;
+      transform-origin: top left;
+    }
+
+    .lockup {
+      position: absolute;
+      left: 50%;
+      top: 43%;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      transform: translate(-50%, -50%);
+      animation: rise-in 680ms ease-out both;
+    }
+
+    .mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bar {
+      width: 23px;
+      border-radius: 999px;
+      transform: rotate(22deg);
+      transform-origin: center;
+      box-shadow: 0 3px 10px rgba(31, 14, 80, 0.12);
+    }
+
+    .bar.purple {
+      height: 80px;
+      background: linear-gradient(180deg, var(--bar-purple-start) 0%, var(--bar-purple-end) 100%);
+    }
+
+    .bar.teal {
+      height: 58px;
+      background: linear-gradient(180deg, var(--bar-teal-start) 0%, var(--bar-teal-end) 100%);
+    }
+
+    .wordmark {
+      margin: 0;
+      font-size: 69px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .part-label {
+      position: absolute;
+      left: 50%;
+      bottom: 45px;
+      margin: 0;
+      transform: translateX(-50%);
+      font-size: 45px;
+      font-weight: 400;
+      letter-spacing: 0.005em;
+      animation: fade-in 820ms ease-out 140ms both;
+    }
+
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -46%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lockup,
+      .part-label {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport" aria-label="Access Hub Part 4 splash screen">
+    <div id="artboard">
+      <div class="lockup">
+        <div class="mark" aria-hidden="true">
+          <span class="bar purple"></span>
+          <span class="bar teal"></span>
+        </div>
+        <h1 class="wordmark">ACCESS HUB</h1>
+      </div>
+      <p class="part-label">Part 4 · 2026</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var artboard = document.getElementById("artboard");
+      var baseWidth = 1600;
+      var baseHeight = 900;
+
+      function fitArtboard() {
+        var scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+        artboard.style.transform = "scale(" + scale + ")";
+      }
+
+      fitArtboard();
+      window.addEventListener("resize", fitArtboard, { passive: true });
+    })();
+  </script>
+</body>
+</html>

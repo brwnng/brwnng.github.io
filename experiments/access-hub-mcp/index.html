@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Access Hub Part 4 - 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #131546;
+      --bg-left: #ddd9e4;
+      --bg-mid: #cab2df;
+      --bg-right: #ae8ce0;
+      --glow: rgba(188, 133, 243, 0.43);
+      --purple-start: #a033ea;
+      --purple-end: #8d36e2;
+      --teal-start: #6cb8ca;
+      --teal-end: #5aa9bf;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(53% 42% at 62% 78%, var(--glow) 0%, rgba(188, 133, 243, 0) 78%),
+        linear-gradient(103deg, var(--bg-left) 0%, var(--bg-mid) 50%, var(--bg-right) 100%);
+    }
+
+    .scene {
+      position: relative;
+      width: min(100vw, calc(100vh * 16 / 9));
+      height: min(100vh, calc(100vw * 9 / 16));
+      max-width: 1600px;
+      max-height: 900px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04));
+      pointer-events: none;
+    }
+
+    .logo-lockup {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 23px;
+      white-space: nowrap;
+    }
+
+    .mark {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 10px;
+      transform: translateY(2px);
+    }
+
+    .bar {
+      display: block;
+      width: 23px;
+      border-radius: 999px;
+      transform: rotate(22deg);
+      transform-origin: center;
+      box-shadow: 0 2px 10px rgba(50, 25, 98, 0.1);
+    }
+
+    .bar.purple {
+      height: 84px;
+      background: linear-gradient(180deg, var(--purple-start) 0%, var(--purple-end) 100%);
+    }
+
+    .bar.teal {
+      height: 57px;
+      background: linear-gradient(180deg, var(--teal-start) 0%, var(--teal-end) 100%);
+    }
+
+    .wordmark {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(34px, 4.35vw, 69px);
+      letter-spacing: 0.01em;
+      line-height: 1;
+    }
+
+    .part-label {
+      position: absolute;
+      left: 50%;
+      bottom: 43px;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: clamp(24px, 2.8vw, 45px);
+      font-weight: 400;
+      letter-spacing: 0.004em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      .logo-lockup {
+        gap: 15px;
+      }
+
+      .mark {
+        gap: 7px;
+        transform: translateY(1px);
+      }
+
+      .bar {
+        width: 15px;
+      }
+
+      .bar.purple {
+        height: 56px;
+      }
+
+      .bar.teal {
+        height: 38px;
+      }
+
+      .part-label {
+        bottom: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene" aria-label="Access Hub Part 4 - 2026 splash screen">
+    <section class="logo-lockup" aria-label="Access Hub logo">
+      <span class="mark" aria-hidden="true">
+        <span class="bar purple"></span>
+        <span class="bar teal"></span>
+      </span>
+      <h1 class="wordmark">ACCESS HUB</h1>
+    </section>
+    <p class="part-label">Part 4 · 2026</p>
+  </main>
+</body>
+</html>
