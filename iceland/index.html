@@ -34,7 +34,8 @@
     /* per-day hues */
     --d1:#0e7c86; --d2:#4c9a2a; --d3:#1f6fb2; --d4:#8049b0; --d5:#d1495b; --d6:#64748b;
     --sh-1:0 1px 2px rgba(22,36,42,.07), 0 1px 3px rgba(22,36,42,.05);
-    --sh-2:0 2px 10px rgba(22,36,42,.10), 0 1px 3px rgba(22,36,42,.06);
+    --sh-2:0 2px 8px rgba(22,36,42,.10), 0 1px 3px rgba(22,36,42,.05);
+    --r-sm:8px; --r-md:12px; --r-lg:16px;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
     --sat:env(safe-area-inset-top,0px);
@@ -56,11 +57,11 @@
   /* ---------- MAP ---------- */
   #map{position:fixed;inset:0;z-index:0;background:#aadaff;}
   .leaflet-container{font-family:var(--sans);background:#dfe9ea;}
-  .leaflet-control-zoom{margin-top:calc(var(--sat) + 64px)!important;margin-left:calc(var(--sal) + 10px)!important;border:1px solid var(--line)!important;box-shadow:var(--sh-2)!important;border-radius:11px!important;overflow:hidden;}
-  .leaflet-control-zoom a{color:var(--ink)!important;background:var(--surface)!important;}
+  .leaflet-control-zoom{margin-top:calc(var(--sat) + 64px)!important;margin-left:calc(var(--sal) + 12px)!important;border:1px solid var(--line)!important;box-shadow:var(--sh-2)!important;border-radius:var(--r-md)!important;overflow:hidden;}
+  .leaflet-control-zoom a{width:44px!important;height:44px!important;line-height:44px!important;font-size:20px!important;color:var(--ink)!important;background:var(--surface)!important;}
   .leaflet-control-zoom a:hover{background:#f4f7f7!important;}
   /* lift attribution above the peeked bottom sheet (which covers ~36dvh) so OSM/CARTO credit stays visible & tappable */
-  .leaflet-control-attribution{font-size:9.5px;background:rgba(255,255,255,.9);margin-bottom:calc(var(--sab) + 37dvh)!important;border-radius:6px 0 0 0;}
+  .leaflet-control-attribution{font-size:9.5px;background:rgba(255,255,255,.9);margin-bottom:calc(var(--sab) + 37dvh)!important;border-radius:0!important;}
 
   /* ---------- MARKERS ---------- */
   .pin{
@@ -84,7 +85,7 @@
   .pin.is-anchor::before{
     content:"";position:absolute;inset:-7px;border-radius:50%;
     border:2px solid var(--hot);opacity:.0;
-    animation:ring 2.4s ease-out infinite;
+    animation:ring 1.8s ease-out infinite;
   }
   @keyframes ring{0%{transform:scale(.7);opacity:.7}70%{opacity:0}100%{transform:scale(1.5);opacity:0}}
   @media (prefers-reduced-motion:reduce){
@@ -94,107 +95,102 @@
   }
 
   /* ---------- POPUP ---------- */
-  .leaflet-popup-content-wrapper{border-radius:13px;box-shadow:0 8px 30px rgba(0,0,0,.25);}
-  .leaflet-popup-content{margin:12px 14px;line-height:1.4;}
+  .leaflet-popup-content-wrapper{border-radius:var(--r-md);box-shadow:0 6px 24px rgba(22,36,42,.20);}
+  .leaflet-popup-content{margin:12px;line-height:1.4;}
   .pop-tag{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
-  .pop-name{font-size:15.5px;font-weight:750;margin:3px 0 2px;}
+  .pop-name{font-size:15px;font-weight:700;margin:4px 0;}
   .pop-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
-  .pop-time{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:11.5px;font-weight:700;color:#fff;background:var(--hot);padding:2px 8px;border-radius:20px;}
-  .pop-dir{display:inline-block;margin-top:9px;font-size:12.5px;font-weight:700;text-decoration:none;}
+  .pop-time{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--hot);background:var(--hot-soft);padding:4px 8px;border-radius:var(--r-sm);}
+  .pop-dir{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;text-decoration:none;}
   .pop-dir::after{content:" ↗";}
 
   /* ---------- LANDING ---------- */
   #landing{
     position:fixed;inset:0;z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch;
-    padding:calc(var(--sat) + 26px) calc(var(--sar) + 18px) calc(var(--sab) + 34px) calc(var(--sal) + 18px);
+    padding:calc(var(--sat) + 24px) calc(var(--sar) + 16px) calc(var(--sab) + 32px) calc(var(--sal) + 16px);
     background:var(--paper);color:var(--ink);
-    transition:opacity .34s ease, transform .34s ease;
+    transition:opacity .3s ease, transform .3s ease;
   }
-  #landing.hidden{opacity:0;transform:translateY(-10px);pointer-events:none;}
+  #landing.hidden{opacity:0;transform:translateY(-8px);pointer-events:none;}
   .land-wrap{max-width:540px;margin:0 auto;}
-  .kicker{font-size:11.5px;text-transform:uppercase;letter-spacing:.2em;color:var(--d1);font-weight:700;}
-  h1{font-size:clamp(40px,13vw,60px);line-height:.95;letter-spacing:-.03em;margin:8px 0 0;font-weight:800;color:var(--ink);text-wrap:balance;}
-  .sub{margin-top:10px;font-size:14.5px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:600;}
-  .sub b{color:var(--ink);}
-  .route-mini{margin-top:4px;font-size:12.5px;color:var(--faint);text-wrap:pretty;}
+  h1{font-size:clamp(32px,11vw,48px);line-height:1.1;letter-spacing:-.015em;margin:0 0 8px;font-weight:700;color:var(--ink);text-wrap:balance;}
+  .sub{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:500;}
+  .sub b{color:var(--ink);font-weight:700;}
 
-  .btns{display:flex;flex-direction:column;gap:10px;margin-top:24px;}
+  .btns{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
   .btn-all{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:var(--d1);color:#fff;border:none;
-    border-radius:16px;padding:16px 18px;cursor:pointer;text-align:left;
-    box-shadow:0 4px 16px rgba(14,124,134,.26);transition:transform .12s ease, box-shadow .2s ease;
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+    background:var(--d1);color:#fff;border:none;min-height:44px;
+    border-radius:var(--r-lg);padding:14px 16px;
+    box-shadow:0 2px 8px rgba(14,124,134,.22);transition:transform .12s ease, box-shadow .2s ease;
   }
   .btn-all:active{transform:scale(.99);}
-  .btn-all .ba-t{font-size:19px;font-weight:800;letter-spacing:-.01em;display:block;}
-  .btn-all .ba-s{font-size:12.5px;opacity:.9;margin-top:1px;display:block;}
-  .btn-all .ba-ic{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:17px;}
+  .btn-all .ba-t{font-size:17px;font-weight:700;letter-spacing:-.01em;}
 
-  .grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  .grid{display:grid;grid-template-columns:1fr;gap:8px;}
   @media(min-width:520px){.grid{grid-template-columns:1fr 1fr;}}
   .day-btn{
-    display:flex;align-items:center;gap:13px;width:100%;text-align:left;cursor:pointer;
-    background:var(--surface);border:1px solid var(--line);border-radius:15px;
-    padding:13px 15px;color:var(--ink);box-shadow:var(--sh-1);
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+    padding:12px 16px;color:var(--ink);box-shadow:var(--sh-1);min-height:44px;
     transition:transform .12s ease, box-shadow .2s ease;
   }
-  .day-btn:active{transform:scale(.99);}
+  .day-btn:active{transform:scale(.995);}
   .day-btn:hover{box-shadow:var(--sh-2);}
-  .db-badge{flex:none;width:38px;height:38px;border-radius:50%;background:var(--c);color:#fff;
-    display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .db-badge{flex:none;width:36px;height:36px;border-radius:50%;background:var(--c);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;}
   .db-main{flex:1;min-width:0;}
-  .db-top{display:flex;align-items:baseline;gap:10px;}
-  .db-title{font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--ink);flex:1;min-width:0;text-wrap:balance;}
-  .db-date{font-size:11.5px;color:var(--faint);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .db-meta{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px;font-size:11px;}
+  .db-title{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink);text-wrap:balance;}
+  .db-meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;font-size:11px;}
   .db-chev{flex:none;width:8px;height:8px;border-right:2px solid var(--line-2);border-top:2px solid var(--line-2);transform:rotate(45deg);}
-  .chip{background:var(--chip);border-radius:8px;padding:3px 9px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:500;}
-  .chip.hot{background:var(--hot-soft);color:#9a4422;font-weight:700;}
-  .land-foot{margin-top:22px;font-size:12px;color:var(--faint);text-align:center;line-height:1.6;text-wrap:pretty;}
-  .land-foot a{display:inline-block;margin-top:16px;color:var(--d1);font-weight:700;text-decoration:none;border:1px solid var(--line-2);background:var(--surface);border-radius:11px;padding:9px 15px;box-shadow:var(--sh-1);}
+  .chip{background:var(--chip);border-radius:var(--r-sm);padding:4px 8px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:500;}
+  .chip.hot{background:var(--hot-soft);color:#6a3017;font-weight:700;}
+  .land-foot{margin-top:24px;text-align:center;}
+  .land-foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;color:var(--d1);font-weight:700;font-size:13px;text-decoration:none;border:1px solid var(--line-2);background:var(--surface);border-radius:var(--r-md);padding:0 16px;box-shadow:var(--sh-1);}
 
   /* ---------- TOP BAR ---------- */
   #topbar{
     position:fixed;left:0;right:0;top:0;z-index:900;
-    padding:calc(var(--sat) + 9px) calc(var(--sar) + 10px) 9px calc(var(--sal) + 10px);
+    padding:calc(var(--sat) + 8px) calc(var(--sar) + 8px) 8px calc(var(--sal) + 8px);
     display:flex;flex-direction:column;gap:8px;pointer-events:none;
   }
   #topbar.hidden{display:none;}
-  .tb-row{display:flex;align-items:center;gap:9px;pointer-events:auto;}
+  .tb-row{display:flex;align-items:center;gap:8px;pointer-events:auto;}
   .tb-home{
-    flex:none;display:flex;align-items:center;gap:7px;
+    flex:none;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
     background:var(--surface);border:1px solid var(--line);
-    border-radius:12px;padding:10px 13px;font-weight:700;font-size:13.5px;color:var(--ink);cursor:pointer;
-    box-shadow:var(--sh-2);
+    border-radius:var(--r-md);padding:0 14px;font-weight:700;font-size:13.5px;color:var(--ink);cursor:pointer;
+    box-shadow:var(--sh-1);
   }
   .tb-home:active{transform:scale(.97);}
-  .tb-home svg{width:15px;height:15px;}
+  .tb-home svg{width:16px;height:16px;}
   .tb-title{
+    display:flex;flex-direction:column;justify-content:center;min-height:44px;
     background:var(--surface);border:1px solid var(--line);
-    border-radius:12px;padding:7px 14px;box-shadow:var(--sh-2);
+    border-radius:var(--r-md);padding:0 14px;box-shadow:var(--sh-1);
     min-width:0;flex:1;
   }
-  .tb-title .tt-1{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c,#0e7c86);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .tb-title .tt-2{font-size:13px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tb-title .tt-1{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c,#0e7c86);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tb-title .tt-2{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .pills{
-    display:flex;gap:7px;overflow-x:auto;pointer-events:auto;
-    padding:2px 1px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    display:flex;gap:8px;overflow-x:auto;pointer-events:auto;
+    padding:4px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
   }
   .pills::-webkit-scrollbar{display:none;}
   .pill{
     flex:none;border:1px solid var(--line-2);background:var(--surface);
-    border-radius:21px;padding:8px 14px;min-height:38px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;
-    box-shadow:var(--sh-1);white-space:nowrap;display:flex;align-items:center;gap:6px;
+    border-radius:var(--r-md);padding:0 14px;min-height:44px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;
+    box-shadow:var(--sh-1);white-space:nowrap;display:flex;align-items:center;gap:8px;scroll-snap-align:center;
   }
   .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--c,#0e7c86);}
-  .pill[aria-current="true"]{background:var(--c,#0e7c86);color:#fff;border-color:transparent;box-shadow:var(--sh-2);}
+  .pill[aria-current="true"]{background:var(--c,#0e7c86);color:#fff;border-color:transparent;}
   .pill[aria-current="true"] .dot{background:#fff;}
 
   /* ---------- BOTTOM SHEET ---------- */
   #sheet{
     position:fixed;left:0;right:0;bottom:0;z-index:850;
-    background:var(--surface);border-radius:18px 18px 0 0;
-    box-shadow:0 -1px 0 rgba(22,36,42,.05), 0 -10px 34px rgba(22,36,42,.13);
+    background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;
+    box-shadow:0 -1px 0 rgba(22,36,42,.05), 0 -8px 28px rgba(22,36,42,.13);
     display:flex;flex-direction:column;
     height:min(88vh,88dvh);
     transform:translateY(var(--sheet-y,58%));
@@ -204,73 +200,73 @@
   }
   #sheet.hidden{display:none;}
   #sheet.dragging{transition:none;}
-  .sheet-grip{padding:12px 0 10px;display:flex;justify-content:center;cursor:grab;flex:none;touch-action:none;}
-  .sheet-grip::before{content:"";width:40px;height:5px;border-radius:5px;background:#d3dbda;}
-  .sheet-head{flex:none;padding:0 18px 14px;border-bottom:1px solid var(--line);touch-action:none;cursor:grab;}
+  .sheet-grip{padding:8px 0;display:flex;justify-content:center;align-items:center;cursor:grab;flex:none;touch-action:none;}
+  .sheet-grip::before{content:"";width:36px;height:4px;border-radius:2px;background:#cfd8d7;}
+  .sheet-head{flex:none;padding:0 16px 12px;border-bottom:1px solid var(--line);touch-action:none;cursor:grab;}
   #sheet.dragging .sheet-head,#sheet.dragging .sheet-grip{cursor:grabbing;}
   #noteSlot{touch-action:none;cursor:grab;}
   .sheet-head .navbtn{cursor:pointer;}
   .sh-row{display:flex;align-items:center;gap:12px;}
   .sh-titles{min-width:0;flex:1;}
-  .sh-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--c,#0e7c86);}
-  .sh-title{font-size:20px;font-weight:750;letter-spacing:-.015em;margin-top:2px;color:var(--ink);text-wrap:balance;}
-  .sh-stats{margin-top:11px;display:flex;flex-wrap:wrap;gap:6px;}
-  .stat{font-size:11px;color:var(--muted);background:var(--chip);border-radius:8px;padding:4px 10px;font-variant-numeric:tabular-nums;}
-  .stat b{color:var(--ink);text-transform:uppercase;font-size:9.5px;letter-spacing:.04em;margin-right:5px;font-weight:700;}
+  .sh-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c,#0e7c86);}
+  .sh-title{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-top:4px;color:var(--ink);text-wrap:balance;}
+  .sh-stats{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;}
+  .stat{font-size:11px;color:var(--muted);background:var(--chip);border-radius:var(--r-sm);padding:4px 8px;font-variant-numeric:tabular-nums;}
+  .stat b{color:var(--ink);text-transform:uppercase;font-size:9.5px;letter-spacing:.04em;margin-right:4px;font-weight:700;}
   .navbtn{
-    flex:none;align-self:center;display:flex;align-items:center;gap:6px;
-    background:var(--accent);color:#fff;border:none;border-radius:11px;padding:10px 14px;
-    font-size:12.5px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;
+    flex:none;align-self:center;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
+    background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);padding:0 14px;
+    font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;
     box-shadow:var(--sh-1);
   }
   .navbtn:active{transform:scale(.97);}
-  .navbtn svg{width:14px;height:14px;}
+  .navbtn svg{width:15px;height:15px;}
   .navbtn[hidden]{display:none;}
 
   .note{
-    margin:14px 16px 0;background:var(--hot-soft);border-radius:12px;padding:12px 14px;
+    margin:12px 16px 0;background:var(--hot-soft);border-radius:var(--r-md);padding:12px;
     font-size:13px;line-height:1.5;color:#5a2b14;text-wrap:pretty;
   }
-  .note .nh{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--hot);margin-bottom:5px;}
+  .note .nh{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--hot);margin-bottom:4px;}
   .note .nh::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--hot);}
   .note.plain{background:var(--chip);color:var(--ink);}
   .note.plain .nh{color:var(--accent);}
   .note.plain .nh::before{background:var(--accent);}
 
-  .list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 0 calc(16px + var(--sab));overscroll-behavior:contain;}
-  .group-h{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--c,#0e7c86);padding:18px 18px 8px;display:flex;align-items:center;gap:8px;}
+  .list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 0 calc(16px + var(--sab));overscroll-behavior:contain;}
+  .group-h{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c,#0e7c86);padding:16px 16px 8px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);}
+  .group-h:first-child{border-top:none;}
   .group-h .gd{font-size:10px;color:var(--faint);font-weight:600;letter-spacing:.02em;text-transform:none;}
   .stop{
-    display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:13px;
+    display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:12px;
     width:100%;text-align:left;background:none;border:none;cursor:pointer;
-    padding:12px 18px;color:var(--ink);border-bottom:1px solid var(--line);
+    padding:12px 16px;color:var(--ink);border-bottom:1px solid var(--line);
   }
   .stop:hover{background:#f5f8f8;}
   .stop:active{background:#eef3f3;}
   .stop .num{
-    width:30px;height:30px;border-radius:50%;background:var(--c,#0e7c86);color:#fff;
+    width:32px;height:32px;border-radius:50%;background:var(--c,#0e7c86);color:#fff;
     display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
     font-variant-numeric:tabular-nums;flex:none;
   }
-  .stop .num.stay{border-radius:9px;}
+  .stop .num.stay{border-radius:var(--r-sm);}
   .stop .num.skip{background:transparent;border:1.5px dashed var(--line-2);color:var(--faint);}
   .stop .num.optional{opacity:.5;}
   .stop .nm{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.3;}
   .stop.is-skip .nm{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--line-2);font-weight:500;}
-  .stop .ty{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35;text-wrap:pretty;}
-  .stop .ty .tag{font-weight:600;color:var(--c,#0e7c86);}
+  .stop .ty{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35;text-wrap:pretty;}
   .stop .right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
   .dur{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap;}
-  .time{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--hot);background:var(--hot-soft);padding:3px 8px;border-radius:7px;white-space:nowrap;}
+  .time{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--hot);background:var(--hot-soft);padding:4px 8px;border-radius:var(--r-sm);white-space:nowrap;}
   .stop .nomap{color:var(--faint);font-size:10.5px;}
 
   /* leading drive row */
   .drive-row{
-    display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:13px;
-    padding:9px 18px;border-bottom:1px solid var(--line);
+    display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:12px;
+    padding:8px 16px;background:var(--chip);
   }
-  .drive-ic{width:30px;display:flex;align-items:center;justify-content:center;color:var(--c,#0e7c86);flex:none;}
-  .drive-ic svg{width:18px;height:18px;opacity:.9;}
+  .drive-ic{width:32px;display:flex;align-items:center;justify-content:center;color:var(--c,#0e7c86);flex:none;}
+  .drive-ic svg{width:18px;height:18px;opacity:.85;}
   .drive-tx{font-size:12.5px;color:var(--muted);}
   .drive-tx b{color:var(--ink);font-weight:600;}
   .drive-dur{font-family:var(--mono);font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap;}
@@ -316,21 +312,17 @@
 
 <section id="landing">
   <div class="land-wrap">
-    <div class="kicker">Self-drive road trip</div>
     <h1>Iceland</h1>
-    <div class="sub"><b>30 Jun – 5 Jul 2026</b> · 6 days · self-drive</div>
-    <div class="route-mini">Reykjavík → Golden Circle → South Coast → glacier lagoons → Blue Lagoon</div>
+    <div class="sub"><b>30 Jun – 5 Jul 2026</b></div>
 
     <div class="btns">
       <button class="btn-all" data-go="everything">
-        <span><span class="ba-t">Everything</span><span class="ba-s">All stops, the full route on one map</span></span>
-        <span class="ba-ic" aria-hidden="true">⤢</span>
+        <span class="ba-t">Everything</span>
       </button>
       <div class="grid" id="dayGrid"></div>
     </div>
 
     <div class="land-foot">
-      Tap a day to see its stops. <span style="color:var(--hot);font-weight:700;">Orange</span> = a booked / fixed time.<br>Times are rough — pad for photos, weather &amp; daylight.<br>
       <a href="itinerary/">View the day-by-day list →</a>
     </div>
   </div>
@@ -347,16 +339,16 @@ const CAR_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><
 const DAYS = [
   {id:"day1", n:1, dow:"Tue", date:"30 Jun", region:"Reykjanes &amp; Reykjavík", color:"var(--d1)", hex:"#0e7c86",
    drive:"", window:"", booked:"Check-in 15:00",
-   note:{type:"plain", h:"Only fixed point", t:"Guesthouse check-in is <b>from 15:00</b> (paid). Everything else is flexible — fit the city stops around it."}},
+   note:{type:"plain", h:"Only fixed point", t:"Check-in <b>from 15:00</b> (paid) — the rest of the day is flexible."}},
   {id:"day2", n:2, dow:"Wed", date:"1 Jul", region:"Golden Circle → Hella", color:"var(--d2)", hex:"#4c9a2a",
    drive:"~3.5h", window:"09:00–21:00", booked:"Silfra 10:30",
    note:{type:"hot", h:"Silfra booked — 10:30", t:"Be at the car park by <b>10:15</b>. It's ~1h from Reykjavík, so <b>leave by 09:00</b>."}},
   {id:"day3", n:3, dow:"Thu", date:"2 Jul", region:"South Coast → Vík", color:"var(--d3)", hex:"#1f6fb2",
    drive:"~2–2.5h", window:"09:00–19:00", booked:"",
-   note:{type:"plain", h:"Self-paced", t:"No bookings today — waterfalls, a rustic pool, then the black-sand coast into Vík."}},
+   note:null},
   {id:"day4", n:4, dow:"Fri", date:"3 Jul", region:"Glacier lagoons → Vík", color:"var(--d4)", hex:"#8049b0",
    drive:"~5–6h", window:"09:00–18:30", booked:"",
-   note:{type:"hot", h:"Longest drive day", t:"~5–6h driving plus the stops barely fits 09:00–18:30. No fixed times, so <b>leave at 09:00</b> and keep each stop brisk — most likely to overrun."}},
+   note:{type:"hot", h:"Longest drive day", t:"<b>Leave 09:00</b> and keep stops tight — most likely to overrun."}},
   {id:"day5", n:5, dow:"Sat", date:"4 Jul", region:"Reykjanes → Blue Lagoon", color:"var(--d5)", hex:"#d1495b",
    drive:"~4–4.5h", window:"", booked:"Blue Lagoon 18:00",
    note:{type:"hot", h:"Blue Lagoon booked — 18:00", t:"Work back from 18:00: off Fagradalsfjall by <b>~17:30</b> → start the hike by <b>~12:30</b> → <b>leave Vík by 09:00</b> and keep Seltún &amp; Kleifarvatn quick."}},
@@ -368,56 +360,56 @@ const DAYS = [
 const TRIP = {
   day1:[
     {name:"Pick up car — Keflavík Airport", type:"Start", kind:"start", lat:63.985, lng:-22.6056},
-    {name:"Gunnuhver", type:"Hot spring · Cliffs", lat:63.8191764, lng:-22.6847291, note:"Steaming mud pools on the Reykjanes tip."},
-    {name:"101 Guesthouse, Reykjavík", type:"Stay · night 1", kind:"stay", anchor:"15:00", lat:64.1432922, lng:-21.916007, note:"Check in from 15:00 · paid."},
-    {name:"Hallgrímskirkja", type:"Church", lat:64.1417, lng:-21.9266, note:"The big one on the hill — tower view."},
-    {name:"Sun Voyager", type:"Sculpture", lat:64.1476306, lng:-21.9222846, note:"Steel ship on the waterfront + walk."},
-    {name:"Perlan", type:"Museum", lat:64.1292528, lng:-21.9188709, note:"Glass dome, ice cave & city views."},
+    {name:"Gunnuhver", type:"Hot spring · Cliffs", lat:63.8191764, lng:-22.6847291},
+    {name:"101 Guesthouse, Reykjavík", type:"Stay · night 1", kind:"stay", anchor:"15:00", lat:64.1432922, lng:-21.916007, note:"Already paid."},
+    {name:"Hallgrímskirkja", type:"Church", lat:64.1417, lng:-21.9266},
+    {name:"Sun Voyager", type:"Sculpture", lat:64.1476306, lng:-21.9222846},
+    {name:"Perlan", type:"Museum", lat:64.1292528, lng:-21.9188709},
     {name:"National Museum of Iceland", type:"Museum", lat:64.1416147, lng:-21.9485779},
     {name:"Dinner (Robert?)", type:"Food", kind:"note", nomap:true},
     {name:"Buy snacks for tomorrow", type:"Task", kind:"note", nomap:true}
   ],
   day2:[
     {kind:"drive", from:"Reykjavík", dur:"~1h"},
-    {name:"Silfra", type:"Snorkel", anchor:"10:30", dur:"~2–3h", lat:64.25483, lng:-21.1173895, note:"Snorkel the rift between two continents. Car park 64°15′23″N 21°06′59″W."},
+    {name:"Silfra", type:"Snorkel", anchor:"10:30", dur:"~2–3h", lat:64.25483, lng:-21.1173895, note:"Car park 64°15′23″N 21°06′59″W."},
     {name:"Þingvellir National Park", type:"Hike", dur:"~2–3h", lat:64.2821725, lng:-21.0764492},
-    {name:"Öxarárfoss", type:"Waterfall", dur:"~40m", lat:64.2658835, lng:-21.1171233, note:"Inside the park."},
-    {name:"Strokkur", type:"Geysir", dur:"~1h", lat:64.3127094, lng:-20.3007211, note:"Erupts every few minutes."},
-    {name:"Gullfoss", type:"Waterfall", dur:"~1h", lat:64.3270716, lng:-20.1199478, note:"The big two-tier one."},
-    {name:"Hotel Kanslarinn, Hella", type:"Stay · night 2", kind:"stay", lat:63.8336, lng:-20.3897, note:"Dinner here."}
+    {name:"Öxarárfoss", type:"Waterfall", dur:"~40m", lat:64.2658835, lng:-21.1171233},
+    {name:"Strokkur", type:"Geysir", dur:"~1h", lat:64.3127094, lng:-20.3007211},
+    {name:"Gullfoss", type:"Waterfall", dur:"~1h", lat:64.3270716, lng:-20.1199478},
+    {name:"Hotel Kanslarinn, Hella", type:"Stay · night 2", kind:"stay", lat:63.8336, lng:-20.3897}
   ],
   day3:[
     {kind:"drive", from:"Hella", dur:"~30m"},
-    {name:"Seljalandsfoss", type:"Waterfall", dur:"~1h", lat:63.6156232, lng:-19.9885688, note:"You can walk behind it — expect spray."},
-    {name:"Gljúfrabúi", type:"Waterfall", dur:"~30m", lat:63.6208631, lng:-19.9864486, note:"Hidden in a cleft a short walk from Seljalandsfoss."},
-    {name:"Skógafoss", type:"Waterfall · Hike", dur:"~1–1.5h", lat:63.5320, lng:-19.5114, note:"Climb the stairs for the top view."},
-    {name:"Kvernufoss", type:"Skip", kind:"skip", lat:63.5304, lng:-19.4869, note:"Skipping — short hike nearby, tight on time."},
-    {name:"Seljavallalaug", type:"Outdoor pool", dur:"~1.5h", lat:63.5667, lng:-19.6086, note:"Rustic mountainside pool. Bring swimwear + towel."},
-    {name:"Sólheimajökull", type:"Skip", kind:"skip", lat:63.5294, lng:-19.3697, note:"Skipping — glacier stuff is on Day 4."},
-    {name:"Sólheimasandur DC-3 wreck", type:"Beach · Plane", dur:"~1–1.5h", lat:63.4909158, lng:-19.3634264, note:"Walk ~45m each way, or shuttle bus ~$20pp."},
-    {name:"Dyrhólaey", type:"Cliffs · Puffins", dur:"~1h", lat:63.4046799, lng:-19.1185521, note:"Arch headland, puffins in summer."},
-    {name:"Reynisfjara", type:"Black beach", dur:"~45m", lat:63.4057404, lng:-19.0716193, note:"Basalt columns — stay back from the sneaker waves."},
+    {name:"Seljalandsfoss", type:"Waterfall", dur:"~1h", lat:63.6156232, lng:-19.9885688, note:"Walk behind it — expect spray."},
+    {name:"Gljúfrabúi", type:"Waterfall", dur:"~30m", lat:63.6208631, lng:-19.9864486},
+    {name:"Skógafoss", type:"Waterfall · Hike", dur:"~1–1.5h", lat:63.5320, lng:-19.5114},
+    {name:"Kvernufoss", type:"Skip", kind:"skip", lat:63.5304, lng:-19.4869},
+    {name:"Seljavallalaug", type:"Outdoor pool", dur:"~1.5h", lat:63.5667, lng:-19.6086, note:"Bring swimwear + towel."},
+    {name:"Sólheimajökull", type:"Skip", kind:"skip", lat:63.5294, lng:-19.3697},
+    {name:"Sólheimasandur DC-3 wreck", type:"Beach · Plane", dur:"~1–1.5h", lat:63.4909158, lng:-19.3634264, note:"Walk ~45m each way, or shuttle ~$20pp."},
+    {name:"Dyrhólaey", type:"Cliffs · Puffins", dur:"~1h", lat:63.4046799, lng:-19.1185521},
+    {name:"Reynisfjara", type:"Black beach", dur:"~45m", lat:63.4057404, lng:-19.0716193, note:"Stay back from the sneaker waves."},
     {name:"Paradise Cottage Götur, Vík", type:"Stay · nights 3–4", kind:"stay", lat:63.4548797, lng:-19.0596828},
     {name:"Katla ice cave tour?", type:"Optional", kind:"note", nomap:true},
     {name:"Dinner", type:"Food", kind:"note", nomap:true}
   ],
   day4:[
     {kind:"drive", from:"Vík", dur:"~1h"},
-    {name:"Fjaðrárgljúfur", type:"Canyon", dur:"~1–1.5h", lat:63.771279, lng:-18.1718158, note:"Serpentine green gorge."},
-    {name:"Dverghamrar", type:"Basalt columns", dur:"~20m", lat:63.8492447, lng:-17.861265, note:"Quick roadside stop."},
-    {name:"Svartifoss", type:"Hike", dur:"~2h", lat:64.0275282, lng:-16.9753083, note:"Waterfall framed by black basalt, in Skaftafell."},
+    {name:"Fjaðrárgljúfur", type:"Canyon", dur:"~1–1.5h", lat:63.771279, lng:-18.1718158},
+    {name:"Dverghamrar", type:"Basalt columns", dur:"~20m", lat:63.8492447, lng:-17.861265},
+    {name:"Svartifoss", type:"Hike", dur:"~2h", lat:64.0275282, lng:-16.9753083, note:"In Skaftafell."},
     {name:"Fjallsárlón", type:"Glacier lagoon", kind:"optional", dur:"maybe skip", lat:64.018611, lng:-16.3849999, note:"Maybe skip in summer."},
     {name:"Jökulsárlón", type:"Glacier lagoon", kind:"optional", dur:"maybe skip", lat:64.0784458, lng:-16.2305537, note:"Maybe skip in summer."},
-    {name:"Diamond Beach", type:"Icy beach", dur:"~1h", lat:64.044334, lng:-16.1776622, note:"Ice chunks on black sand."},
-    {name:"Paradise Cottage Götur, Vík", type:"Stay · same as last night", kind:"stay", lat:63.4548797, lng:-19.0596828, note:"~2h drive back west. Dinner in Vík."}
+    {name:"Diamond Beach", type:"Icy beach", dur:"~1h", lat:64.044334, lng:-16.1776622},
+    {name:"Paradise Cottage Götur, Vík", type:"Stay · same as last night", kind:"stay", lat:63.4548797, lng:-19.0596828, note:"~2h drive back."}
   ],
   day5:[
     {kind:"drive", from:"Vík", dur:"~2.5h"},
     {name:"Seltún Geothermal Area", type:"Geothermal walk", dur:"~30–45m", lat:63.8957643, lng:-22.0548326, note:"Time permitting."},
     {name:"Kleifarvatn", type:"Lake", kind:"optional", dur:"quick", lat:63.9257301, lng:-21.9715926, note:"Time permitting."},
-    {name:"Fagradalsfjall", type:"Volcano hike", dur:"~4–5h", lat:63.8902658, lng:-22.2693992, note:"The long item — pace it to make 18:00."},
+    {name:"Fagradalsfjall", type:"Volcano hike", dur:"~4–5h", lat:63.8902658, lng:-22.2693992, note:"Pace it to make 18:00."},
     {name:"Blue Lagoon", type:"Spa", anchor:"18:00", dur:"~2–3h", lat:63.8807176, lng:-22.4472964, note:"Booked. Bring swimwear."},
-    {name:"Keflavík Micro Suites", type:"Stay · night 5", kind:"stay", lat:63.9994406, lng:-22.5494684, note:"Dinner nearby."}
+    {name:"Keflavík Micro Suites", type:"Stay · night 5", kind:"stay", lat:63.9994406, lng:-22.5494684}
   ],
   day6:[
     {name:"Keflavík Micro Suites", type:"Start", kind:"start", lat:63.9994406, lng:-22.5494684, note:"Leave by ~06:45 — KEF is ~5 min away."},
@@ -497,7 +489,7 @@ function renderMap(sel){
         zIndexOffset: s.anchor?1000:(s.kind==="stay"?500:0),
         keyboard:true, title:s.name
       });
-      mk.bindPopup(popupHtml(s), {maxWidth:260, autoPanPadding:[28,80]});
+      mk.bindPopup(popupHtml(s), {maxWidth:220, autoPanPadding:[28,120]});
       mk.addTo(activeLayer);
       markerIndex[markerKey(dayId, idx)] = mk;
       allLatLng.push([s.lat, s.lng]);
@@ -559,7 +551,7 @@ function buildList(sel){
       row.innerHTML =
         '<span class="'+numClass+'" style="--c:'+day.hex+'">'+numTxt+'</span>'+
         '<span class="body"><span class="nm">'+s.name+'</span>'+
-        '<span class="ty"><span class="tag" style="color:'+day.hex+'">'+s.type+'</span>'+(s.note? ' · '+s.note : '')+'</span></span>'+
+        (s.note ? '<span class="ty">'+s.note+'</span>' : '')+'</span>'+
         '<span class="right">'+durHtml+'</span>';
 
       if(isMapped(s)){
@@ -613,15 +605,15 @@ function setChrome(sel){
 
   if(sel==="everything"){
     setVar("#0e7c86");
-    txt("tbEyebrow","Everything"); txt("tbSub","All 6 days · whole route");
+    txt("tbEyebrow","Everything"); txt("tbSub","All 6 days");
     txt("shEyebrow","Everything"); txt("shTitle","The whole trip");
-    stat(stats,"Days","6"); stat(stats,"Span","30 Jun – 5 Jul"); stat(stats,"Stops", String(countMapped()));
+    stat(stats,"Stops", String(countMapped()));
     navBtn.hidden = true;
-    note.innerHTML = '<div class="note plain"><div class="nh">How to read it</div>Each colour is a day. Dashed lines are the rough driving route (not turn-by-turn). Tap any stop to jump to it.</div>';
+    note.innerHTML = '<div class="note plain"><div class="nh">On the map</div>Dashed lines are the rough route, not turn-by-turn. Tap a stop to jump to it.</div>';
   } else {
     const day = DAYS.find(d=>d.id===sel);
     setVar(day.hex);
-    txt("tbEyebrow","Day "+day.n+" · "+day.dow+" "+day.date);
+    txt("tbEyebrow","Day "+day.n);
     document.getElementById("tbSub").innerHTML = day.region;
     txt("shEyebrow","Day "+day.n+" · "+day.dow+" "+day.date);
     document.getElementById("shTitle").innerHTML = day.region;
@@ -693,12 +685,11 @@ function buildLanding(){
     if(d.window) chips += '<span class="chip">'+d.window+'</span>';
     if(d.drive) chips += '<span class="chip">Drive '+d.drive+'</span>';
     if(d.booked) chips += '<span class="chip hot">'+d.booked+'</span>';
-    if(!chips) chips = '<span class="chip">Flexible</span>';
     b.innerHTML =
       '<span class="db-badge">'+d.n+'</span>'+
       '<span class="db-main">'+
-        '<span class="db-top"><span class="db-title">'+d.region+'</span><span class="db-date">'+d.dow+' '+d.date+'</span></span>'+
-        '<span class="db-meta">'+chips+'</span>'+
+        '<span class="db-title">'+d.region+'</span>'+
+        (chips ? '<span class="db-meta">'+chips+'</span>' : '')+
       '</span>'+
       '<span class="db-chev" aria-hidden="true"></span>';
     b.addEventListener("click", ()=>go(d.id));
@@ -740,7 +731,7 @@ function initSheetDrag(){
   const grip = document.getElementById("grip");
   // the whole top region is a drag handle: grip + header (title/stats) + note
   const handles = [grip, document.getElementById("sheetHead"), document.getElementById("noteSlot")];
-  let dragging=false, startY=0, startPct=58, moved=false, vh=0, capEl=null;
+  let dragging=false, startY=0, startPct=58, moved=false, vh=0, capEl=null, lastY=0, lastT=0, vel=0;
   const statePct = ()=> sheetState==="full" ? 0 : 58;
 
   function onDown(e){
@@ -748,14 +739,17 @@ function initSheetDrag(){
     if(e.target.closest && e.target.closest("a, button:not(.sheet-grip)")) return;
     dragging=true; moved=false; vh=window.innerHeight;
     startY=e.clientY; startPct=statePct();
+    lastY=e.clientY; lastT=performance.now(); vel=0;
     sheet.classList.add("dragging");
     capEl=e.currentTarget;
     if(capEl.setPointerCapture) try{ capEl.setPointerCapture(e.pointerId); }catch(_){}
   }
   function onMove(e){
     if(!dragging) return;
-    const dy=e.clientY-startY;
+    const now=performance.now(), dy=e.clientY-startY;
     if(Math.abs(dy)>5) moved=true;
+    if(now>lastT) vel=(e.clientY-lastY)/(now-lastT);   // px/ms, + = downward
+    lastY=e.clientY; lastT=now;
     const pct=Math.max(0, Math.min(72, startPct + dy/vh*100));
     sheet.style.setProperty("--sheet-y", pct+"%");
     if(e.cancelable) e.preventDefault();
@@ -765,7 +759,10 @@ function initSheetDrag(){
     dragging=false; sheet.classList.remove("dragging");
     if(!moved){ setSheet(sheetState==="full" ? "peek" : "full"); return; }   // plain tap toggles
     const cur=parseFloat(getComputedStyle(sheet).getPropertyValue("--sheet-y"))||0;
-    setSheet(cur < 29 ? "full" : "peek");
+    if(vel>0.6 && cur>50){ location.hash=""; return; }   // hard fling down → back to all days
+    if(vel<-0.5){ setSheet("full"); return; }            // flick up → expand
+    if(vel>0.5){ setSheet("peek"); return; }             // flick down → collapse
+    setSheet(cur < 29 ? "full" : "peek");                // otherwise snap by position
   }
   handles.forEach(h=>{
     if(!h) return;
