@@ -1,0 +1,443 @@
+<title>Iceland Road Trip · 30 Jun – 5 Jul 2026</title>
+<style>
+  :root{
+    --paper:#e9eded;
+    --surface:#ffffff;
+    --ink:#1a2325;
+    --muted:#5d6d70;
+    --faint:#8b9b9e;
+    --line:#d6dedd;
+    --accent:#1d6e77;
+    --accent-2:#143f45;
+    --accent-soft:#e0edee;
+    --hot:#ac4f27;
+    --hot-soft:#f6e8e0;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  .wrap{max-width:640px;margin:0 auto;padding:34px 20px 72px;}
+
+  /* Masthead */
+  .masthead{border-top:3px solid var(--ink);padding-top:18px;}
+  .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:600;}
+  h1{font-size:clamp(38px,11vw,56px);line-height:.96;letter-spacing:-.03em;margin:8px 0 0;font-weight:800;text-wrap:balance;}
+  .dates{margin-top:12px;font-size:15px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+  .route{margin-top:3px;font-size:13.5px;color:var(--muted);text-wrap:pretty;}
+
+  /* Legend */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 30px;padding:13px 15px;background:var(--surface);border:1px solid var(--line);border-radius:11px;font-size:12.5px;color:var(--muted);}
+  .leg-item{display:inline-flex;align-items:center;gap:7px;}
+  .pip{width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);flex:none;}
+  .pip.hot{background:var(--hot);border-color:var(--hot);}
+  .pip.sm{width:7px;height:7px;border-color:var(--faint);background:var(--paper);}
+  .leg-item .mono{font-family:var(--mono);font-size:11.5px;color:var(--faint);}
+
+  /* Days */
+  .days{display:flex;flex-direction:column;gap:18px;}
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:22px 20px 8px;}
+  .day-h{margin-bottom:16px;}
+  .eyebrow{font-size:11.5px;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;}
+  .day-h h2{font-size:21px;letter-spacing:-.01em;margin:5px 0 0;font-weight:700;text-wrap:balance;}
+  .stats{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+  .stat{font-size:11.5px;color:var(--muted);background:var(--accent-soft);border-radius:20px;padding:3px 11px;font-variant-numeric:tabular-nums;}
+  .stat b{font-weight:700;color:var(--accent-2);letter-spacing:.02em;text-transform:uppercase;font-size:10px;margin-right:4px;}
+
+  /* Anchor callout */
+  .anchor{background:var(--hot-soft);border-radius:10px;padding:12px 14px;margin-bottom:18px;}
+  .anchor-h{display:flex;align-items:center;gap:8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;font-weight:700;color:var(--hot);}
+  .adot{width:9px;height:9px;border-radius:50%;background:var(--hot);flex:none;}
+  .anchor p{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink);text-wrap:pretty;}
+  .anchor b{font-weight:700;}
+
+  /* Group label inside a day */
+  .group{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);font-weight:600;margin:2px 0 12px 88px;}
+
+  /* Timeline rows */
+  .legs{margin-top:2px;}
+  .row{display:grid;grid-template-columns:64px 24px 1fr;align-items:start;}
+  .rail{font-family:var(--mono);font-size:11.5px;text-align:right;padding:5px 0 0;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+  .rail.hot{color:var(--hot);font-weight:600;}
+  .mk{position:relative;}
+  .ln{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:2px;background:var(--line);}
+  .dot{position:absolute;left:50%;top:6px;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);box-shadow:0 0 0 3px var(--surface);}
+  .dot.hot{background:var(--hot);border-color:var(--hot);}
+  .dot.skip{width:8px;height:8px;border-color:var(--faint);box-shadow:0 0 0 3px var(--surface);}
+  .legs > .row:first-child .ln{top:8px;}
+  .legs > .row:last-child .ln{bottom:auto;height:8px;}
+
+  .content{padding:1px 0 19px 8px;}
+  .name{font-weight:650;font-size:15px;letter-spacing:-.005em;}
+  .name.muted{color:var(--faint);font-weight:500;text-decoration:line-through;text-decoration-color:var(--line);}
+  .sub{margin-top:2px;font-size:13px;color:var(--muted);line-height:1.45;text-wrap:pretty;}
+  .tag{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-2);font-weight:700;}
+  .map{color:var(--accent);text-decoration:none;font-weight:600;white-space:nowrap;border-bottom:1px solid var(--accent-soft);}
+  .map:hover{border-bottom-color:var(--accent);}
+  .map:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px;}
+
+  /* Drive connector rows */
+  .row.drive .dot{width:6px;height:6px;border-color:var(--faint);background:var(--paper);top:8px;box-shadow:0 0 0 3px var(--surface);}
+  .drive-c{padding:2px 0 14px 8px;color:var(--faint);font-size:12px;}
+  .drive-c::before{content:"↓ ";}
+
+  .footnote{margin-top:30px;font-size:12.5px;color:var(--muted);line-height:1.6;text-align:center;text-wrap:pretty;}
+  .footnote .pip{display:inline-block;vertical-align:-1px;}
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="kicker">Self-drive road trip</div>
+    <h1>Iceland</h1>
+    <div class="dates">30 June – 5 July 2026 · 6 days</div>
+    <div class="route">Reykjavík → Golden Circle → South Coast → glacier lagoons → Blue Lagoon</div>
+    <a href="../" style="display:inline-block;margin-top:16px;font-size:13.5px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:11px;padding:9px 15px;">Open the interactive map →</a>
+  </div>
+
+  <div class="legend">
+    <span class="leg-item"><span class="pip hot"></span> Fixed time — be there</span>
+    <span class="leg-item"><span class="pip"></span> Stop · ≈ duration</span>
+    <span class="leg-item"><span class="mono">~1h</span> Drive estimate</span>
+  </div>
+
+  <div class="days">
+
+    <!-- DAY 1 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 1 · Tue 30 Jun</div>
+        <h2>Reykjanes &amp; Reykjavík</h2>
+      </div>
+
+      <div class="anchor">
+        <div class="anchor-h"><span class="adot"></span> Only fixed point today</div>
+        <p>Guesthouse check-in is <b>from 15:00</b> (already paid). Everything else is flexible — fit the city stops around it.</p>
+      </div>
+
+      <div class="legs">
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Pick up car</div><div class="sub"><span class="tag">Start</span> · Keflavík airport</div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~30m</div></div>
+
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Gunnuhver</div><div class="sub"><span class="tag">Hot spring · Cliffs</span> · steaming mud pools on the Reykjanes tip · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Gunnuhver/@63.8183469,-22.7110063,10.61z/data=!4m6!3m5!1s0x4929e443d8cb7253:0x39d3692967278f68!8m2!3d63.8191764!4d-22.6847291!16s%2Fg%2F121lmsy5">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1–1.5h</div></div>
+
+        <div class="row">
+          <div class="rail hot">15:00</div>
+          <div class="mk"><span class="ln"></span><span class="dot hot"></span></div>
+          <div class="content"><div class="name">101 Guesthouse, Reykjavík</div><div class="sub"><span class="tag">Stay · night 1</span> · check in from 15:00 · paid · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/101+Guesthouse+hotel/@64.1432922,-21.9185819,17z/data=!4m11!3m10!1s0x48d674cd44b8ab2b:0x425140ed3f5202ee!5m4!1s2026-01-25!2i2!4m1!1i2!8m2!3d64.1432922!4d-21.916007!16s%2Fg%2F1vs5w98x">Map ↗</a></div></div>
+        </div>
+      </div>
+
+      <div class="group">Around Reykjavík — all close together, do in any order</div>
+      <div class="legs">
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Hallgrímskirkja</div><div class="sub"><span class="tag">Church</span> · the big one on the hill · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps?sca_esv=bf2dd7d5d84e1d42&q=Hallgr%C3%ADmskirkja&entry=mc">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Sun Voyager</div><div class="sub"><span class="tag">Sculpture</span> · steel ship on the waterfront + walk around · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Sun+Voyager/@64.1476306,-21.9248595,17z/data=!4m14!1m7!3m6!1s0x48d674ce090ce6cf:0xd87b3a7b999ca6a8!2sSun+Voyager!8m2!3d64.1476306!4d-21.9222846!16s%2Fm%2F0bbth05">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Perlan</div><div class="sub"><span class="tag">Museum</span> · glass dome, ice cave &amp; city views · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Perlan/@64.1292527,-21.9237418,17z/data=!3m1!4b1!4m6!3m5!1s0x48d60b4cb9a4739d:0x720effd6596f3f29!8m2!3d64.1292528!4d-21.9188709!16zL20vMDk5dnkw">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">National Museum of Iceland</div><div class="sub"><span class="tag">Museum</span> · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/National+Museum+of+Iceland/@64.1416147,-21.9581051,16z/data=!4m6!3m5!1s0x48d60b31aec1a1af:0xd8fee6280b663c95!8m2!3d64.1416147!4d-21.9485779!16zL20vMGIxcGc3">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Dinner</div><div class="sub"><span class="tag">Food</span> · Robert?</div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Buy snacks for tomorrow</div><div class="sub"><span class="tag">Task</span> · long day ahead, few shops on the route</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 2 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 2 · Wed 1 Jul</div>
+        <h2>Golden Circle → Hella</h2>
+        <div class="stats"><span class="stat"><b>Window</b> 09:00–21:00</span><span class="stat"><b>Driving</b> ~3.5h</span></div>
+      </div>
+
+      <div class="anchor">
+        <div class="anchor-h"><span class="adot"></span> Silfra snorkel is booked — 10:30</div>
+        <p>Be at the Silfra car park by <b>10:15</b> (64°15′23″N 21°06′59″W). It's ~1h from Reykjavík, so <b>leave by 09:00</b>.</p>
+      </div>
+
+      <div class="legs">
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1h · Reykjavík → Þingvellir</div></div>
+        <div class="row">
+          <div class="rail hot">10:30</div>
+          <div class="mk"><span class="ln"></span><span class="dot hot"></span></div>
+          <div class="content"><div class="name">Silfra</div><div class="sub"><span class="tag">Snorkel</span> · in the rift between two continents · ~2–3h · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Silfra/@64.2548299,-21.1222604,17z/data=!3m1!4b1!4m6!3m5!1s0x48d6812c929bdf23:0x598f5b94233a4bc4!8m2!3d64.25483!4d-21.1173895!16s%2Fg%2F11khd16tn3">Map ↗</a> · <a class="map" target="_blank" rel="noopener" href="https://www.silfrafissure.com/">Booking ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail">~2–3h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Þingvellir National Park</div><div class="sub"><span class="tag">Hike</span> · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Thingvellir+National+Park/@64.2745162,-21.0301714,10.01z/data=!4m15!1m8!3m7!1s0x48d6811ffb13697b:0x6b756c8b079262f2!2sThingvellir+National+Park!8m2!3d64.2821725!4d-21.0764492!10e8!16zL20vMDMxOXoy">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail">~40m</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Öxarárfoss</div><div class="sub"><span class="tag">Waterfall</span> · inside the park · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/%C3%96xar%C3%A1rfoss/@64.2658835,-21.1171233,13z/data=!4m15!1m8!3m7!1s0x48d6811eadf0fd95:0x48dd72aa97e36e57!2zw5Z4YXLDoXJmb3Nz!8m2!3d64.2658835!4d-21.1171233!10e5!16s%2Fm%2F02pz22s">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1h</div></div>
+        <div class="row">
+          <div class="rail">~1h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Strokkur</div><div class="sub"><span class="tag">Geysir</span> · erupts every few minutes · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Strokkur+Geyser/@64.3127094,-20.303296,17z/data=!3m1!4b1!4m6!3m5!1s0x48d65fcb86a21e43:0x13fe408fd8ae0be3!8m2!3d64.3127094!4d-20.3007211!16zL20vMDFzZjdx">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail">~1h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Gullfoss</div><div class="sub"><span class="tag">Waterfall</span> · the big two-tier one · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Gullfoss+Falls/@64.3266937,-20.125284,17z/data=!3m1!4b1!4m6!3m5!1s0x48d6a574af45b6c9:0x2c6347db0b411601!8m2!3d64.3270716!4d-20.1199478!16zL20vMDJnYzA2">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1h</div></div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Hotel Kanslarinn, Hella</div><div class="sub"><span class="tag">Stay · night 2</span> · dinner here · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps?sca_esv=9db4d21e14f09c73&q=hotel+kanslarinn&entry=mc">Map ↗</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 3 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 3 · Thu 2 Jul</div>
+        <h2>South Coast → Vík</h2>
+        <div class="stats"><span class="stat"><b>Window</b> 09:00–19:00</span><span class="stat"><b>Driving</b> ~2–2.5h</span><span class="stat"><b>Bookings</b> none — self-paced</span></div>
+      </div>
+
+      <div class="legs">
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~30m</div></div>
+        <div class="row">
+          <div class="rail">~1h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Seljalandsfoss</div><div class="sub"><span class="tag">Waterfall</span> · you can walk behind it (expect spray) · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Seljalandsfoss/@63.6156232,-19.9885688,15z/data=!4m15!1m8!3m7!1s0x48d71eade8ef2415:0xae01e6205209178d!2sSeljalandsfoss!8m2!3d63.6156232!4d-19.9885688!10e5!16zL20vMDMyZ2tq">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail">~30m</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Gljúfrabúi</div><div class="sub"><span class="tag">Waterfall</span> · hidden in a cleft a short walk from Seljalandsfoss · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Glj%C3%BAfrab%C3%BAi/@63.6208631,-19.9890235,17z/data=!3m1!4b1!4m6!3m5!1s0x48d71eb01553b317:0x966a55b6ec145f2e!8m2!3d63.6208631!4d-19.9864486!16s%2Fm%2F0hhtv1m">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~30m</div></div>
+        <div class="row">
+          <div class="rail">~1–1.5h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Skógafoss</div><div class="sub"><span class="tag">Waterfall · Hike</span> · climb the stairs for the top view · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps?sca_esv=bf2dd7d5d84e1d42&q=Sk%C3%B3gafoss&entry=mc">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot skip"></span></div>
+          <div class="content"><div class="name muted">Kvernufoss</div><div class="sub">Skipping · short hike nearby, but tight on time</div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~15m</div></div>
+        <div class="row">
+          <div class="rail">~1.5h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Seljavallalaug</div><div class="sub"><span class="tag">Outdoor pool</span> · bring swimwear + towel · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Seljavallalaug+Swimming+Pool/@63.5659791,-19.6091423,10z/data=!4m15!1m8!3m7!1s0x48d73ccb912bc3f3:0xde312fed7a2b4ac9!2sSeljavallalaug+Swimming+Pool!8m2!3d63.5659791!4d-19.6091423!10e5!16s%2Fm%2F0h3ns0k">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot skip"></span></div>
+          <div class="content"><div class="name muted">Sólheimajökull</div><div class="sub">Skipping · glacier stuff is on Day 4</div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~15m</div></div>
+        <div class="row">
+          <div class="rail">~1–1.5h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Sólheimasandur DC-3 wreck</div><div class="sub"><span class="tag">Beach · Plane</span> · walk ~45m each way, or shuttle bus ~$20pp · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Parking+for+S%C3%B3lheimasandur+Plane+Wreck/@63.4843923,-19.3654759,12.56z/data=!4m6!3m5!1s0x48d73910f2a9d26f:0x8a1bf29d463c3e80!8m2!3d63.4909158!4d-19.3634264!16s%2Fg%2F11fk1kzs06">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~30m</div></div>
+        <div class="row">
+          <div class="rail">~1h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Dyrhólaey</div><div class="sub"><span class="tag">Cliffs · Puffins</span> · arch headland, puffins in summer · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Dyrh%C3%B3laey/@63.4046799,-19.121127,17z/data=!3m1!4b1!4m6!3m5!1s0x48d749b2488fd399:0x2725ca255462e772!8m2!3d63.4046799!4d-19.1185521!16zL20vMDMzaHNs">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~25m</div></div>
+        <div class="row">
+          <div class="rail">~45m</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Reynisfjara</div><div class="sub"><span class="tag">Black beach</span> · basalt columns — stay back from the sneaker waves · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Reynisfjara+Beach/@63.4020977,-19.0795161,13.25z/data=!4m6!3m5!1s0x48d74984d567267d:0xe07954a3f4b36bd5!8m2!3d63.4057404!4d-19.0716193!16s%2Fg%2F1tfg77rb">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~10m</div></div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Paradise Cottage Götur, Vík</div><div class="sub"><span class="tag">Stay · nights 3–4</span> · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Paradise+Cottage+G%C3%B6tur/@63.4548797,-19.0622577,17z/data=!3m1!4b1!4m10!3m9!1s0x48d735e61c1e8d19:0x4a6bcaad39688ea5!5m3!1s2026-07-01!4m1!1i2!8m2!3d63.4548797!4d-19.0596828!16s%2Fg%2F11f7r7qnj2">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Katla ice cave tour?</div><div class="sub"><span class="tag">Optional</span> · only if there's time / energy</div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Dinner</div><div class="sub"><span class="tag">Food</span> · in Vík</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 4 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 4 · Fri 3 Jul</div>
+        <h2>Glacier lagoons → back to Vík</h2>
+        <div class="stats"><span class="stat"><b>Window</b> 09:00–18:30</span><span class="stat"><b>Driving</b> ~5–6h</span><span class="stat"><b>Note</b> longest drive day</span></div>
+      </div>
+
+      <div class="anchor">
+        <div class="anchor-h"><span class="adot"></span> No bookings, but it's a big drive</div>
+        <p>~5–6h of driving plus the stops barely fits 09:00–18:30. No fixed times, so <b>leave at 09:00</b> and keep each stop brisk — this is the day most likely to overrun.</p>
+      </div>
+
+      <div class="legs">
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1h</div></div>
+        <div class="row">
+          <div class="rail">~1–1.5h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Fjaðrárgljúfur</div><div class="sub"><span class="tag">Canyon</span> · serpentine green gorge · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Fja%C3%B0r%C3%A1rglj%C3%BAfur/@63.771279,-18.1743907,17z/data=!4m14!1m7!3m6!1s0x48d0e5f0594291dd:0xa420ecc17165b5bd!2zRmphw7Byw6FyZ2xqw7pmdXI!8m2!3d63.771279!4d-18.1718158!16s%2Fm%2F0n46q1l">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~20m</div></div>
+        <div class="row">
+          <div class="rail">~20m</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Dverghamrar</div><div class="sub"><span class="tag">Basalt columns</span> · quick roadside stop · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Dverghamrar/@63.8492447,-17.8638399,17z/data=!3m1!4b1!4m6!3m5!1s0x48d0f98260850771:0xcc9062a44575cfe1!8m2!3d63.8492447!4d-17.861265!16s%2Fg%2F121_5ymh">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1h</div></div>
+        <div class="row">
+          <div class="rail">~2h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Svartifoss</div><div class="sub"><span class="tag">Hike</span> · waterfall framed by black basalt (in Skaftafell) · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Svartifoss/@64.0333733,-17.0138205,12.78z/data=!4m10!1m2!2m1!1ssvartifoss+trail!3m6!1s0x48d035cfe089a257:0xe3270fa1426553d7!8m2!3d64.0275282!4d-16.9753083">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Fjallsárlón</div><div class="sub"><span class="tag">Glacier lagoon</span> · maybe skip in summer · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Fjalls%C3%A1rl%C3%B3n/@64.0443297,-16.1284658,9.82z/data=!4m15!1m8!3m7!1s0x48d02857f3abcb07:0x95511c8c24562d7f!2zRmphbGxzw6FybMOzbg!8m2!3d64.018611!4d-16.3849999!10e5!16zL20vMDMydjR3">Map ↗</a></div></div>
+        </div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Jökulsárlón</div><div class="sub"><span class="tag">Glacier lagoon</span> · maybe skip in summer · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/J%C3%B6kuls%C3%A1rl%C3%B3n/@64.0761817,-16.2504815,13z/data=!3m1!4b1!4m6!3m5!1s0x48cfd6ecd73a3819:0xcd05c959e10146a9!8m2!3d64.0784458!4d-16.2305537!16zL20vMDMydjRn">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~1–1.5h</div></div>
+        <div class="row">
+          <div class="rail">~1h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Diamond Beach</div><div class="sub"><span class="tag">Icy beach</span> · ice chunks on black sand · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Diamond+Beach/@64.0443323,-16.1971459,15z/data=!4m14!1m7!3m6!1s0x48cfd719a4fb06f3:0x4202e865f907845a!2sDiamond+Beach!8m2!3d64.044334!4d-16.1776622!16s%2Fg%2F11bxdvx0kx">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~2h · back west</div></div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Paradise Cottage Götur, Vík</div><div class="sub"><span class="tag">Stay · same as last night</span> · dinner in Vík · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Paradise+Cottage+G%C3%B6tur/@63.4548797,-19.0622577,17z/data=!3m1!4b1!4m10!3m9!1s0x48d735e61c1e8d19:0x4a6bcaad39688ea5!5m3!1s2026-07-01!4m1!1i2!8m2!3d63.4548797!4d-19.0596828!16s%2Fg%2F11f7r7qnj2">Map ↗</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 5 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 5 · Sat 4 Jul</div>
+        <h2>Reykjanes → Blue Lagoon → Keflavík</h2>
+        <div class="stats"><span class="stat"><b>Driving</b> ~4–4.5h</span></div>
+      </div>
+
+      <div class="anchor">
+        <div class="anchor-h"><span class="adot"></span> Blue Lagoon is booked — 18:00</div>
+        <p>The volcano hike (~4–5h) is the squeeze. Work back from 18:00: be off Fagradalsfjall by <b>~17:30</b> → start the hike by <b>~12:30</b> → <b>leave Vík by 09:00</b> and keep Seltún &amp; Kleifarvatn quick (they're "time permitting" anyway).</p>
+      </div>
+
+      <div class="legs">
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~2.5h · Vík → Reykjanes (stops along the way)</div></div>
+        <div class="row">
+          <div class="rail">~30–45m</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Seltún Geothermal Area</div><div class="sub"><span class="tag">Geothermal walk</span> · time permitting · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Selt%C3%BAn+Geothermal+Area/@63.8957642,-22.0597035,17z/data=!3m1!4b1!4m6!3m5!1s0x48d610b3c1c9ebef:0x58598ca6980bf4a9!8m2!3d63.8957643!4d-22.0548326!16s%2Fg%2F11b6mqxd8f">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~10m</div></div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Kleifarvatn</div><div class="sub"><span class="tag">Lake</span> · time permitting · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Kleifarvatn/@63.9251529,-21.9816195,13z/data=!4m6!3m5!1s0x48d6113e0935446d:0x653546f8345a1509!8m2!3d63.9257301!4d-21.9715926!16zL20vMDMydG10">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~30m</div></div>
+        <div class="row">
+          <div class="rail">~4–5h</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Fagradalsfjall</div><div class="sub"><span class="tag">Volcano hike</span> · the long item — pace it to make 18:00 · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Fagradalsfjall+Volcano/@63.8902658,-22.4218345,12z/data=!4m10!1m2!2m1!1sFagradalsfjall+volcano!3m6!1s0x48d61b66ebfc555d:0x4d3d7331ff661af1!8m2!3d63.8902658!4d-22.2693992">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~20m</div></div>
+        <div class="row">
+          <div class="rail hot">18:00</div>
+          <div class="mk"><span class="ln"></span><span class="dot hot"></span></div>
+          <div class="content"><div class="name">Blue Lagoon</div><div class="sub"><span class="tag">Spa</span> · booked · ~2–3h · bring swimwear · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Blue+Lagoon/@63.8787613,-22.5208956,11.81z/data=!4m10!1m2!2m1!1sBlue+Lagoon+Iceland!3m6!1s0x48d61d66aff7df0d:0xf3747a894416f06e!8m2!3d63.8807176!4d-22.4472964">Map ↗</a></div></div>
+        </div>
+        <div class="row drive"><div class="rail"></div><div class="mk"><span class="ln"></span><span class="dot"></span></div><div class="drive-c">drive ~25m</div></div>
+        <div class="row">
+          <div class="rail"></div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Keflavík Micro Suites</div><div class="sub"><span class="tag">Stay · night 5</span> · dinner nearby · <a class="map" target="_blank" rel="noopener" href="https://www.google.com/maps/place/Keflavik+Micro+Suites/@64.0001446,-22.5512908,14.41z/data=!4m10!3m9!1s0x48d6038cb84db611:0x9f8151bcd7d54581!5m3!1s2026-07-01!4m1!1i2!8m2!3d63.9994406!4d-22.5494684!16s%2Fg%2F11f8l2dbtj">Map ↗</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 6 -->
+    <section class="day">
+      <div class="day-h">
+        <div class="eyebrow">Day 6 · Sun 5 Jul</div>
+        <h2>Departure</h2>
+      </div>
+
+      <div class="anchor">
+        <div class="anchor-h"><span class="adot"></span> Flight 10:20 → London Heathrow T5</div>
+        <p>Lands LHR T5 <b>14:30</b>. For an international summer departure, aim to be at KEF by <b>~07:30</b> (≈2h45 before). Return the car by <b>~07:00</b> for refuel + drop-off — the hotel is ~5 min away. So <b>leave by ~06:45</b>.</p>
+      </div>
+
+      <div class="legs">
+        <div class="row">
+          <div class="rail">~06:45</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Leave Keflavík Micro Suites</div><div class="sub"><span class="tag">Depart</span> · KEF is ~5 min away</div></div>
+        </div>
+        <div class="row">
+          <div class="rail">~07:00</div>
+          <div class="mk"><span class="ln"></span><span class="dot"></span></div>
+          <div class="content"><div class="name">Drop off car at KEF</div><div class="sub"><span class="tag">Car</span> · refuel first if the rental needs a full tank</div></div>
+        </div>
+        <div class="row">
+          <div class="rail hot">10:20</div>
+          <div class="mk"><span class="ln"></span><span class="dot hot"></span></div>
+          <div class="content"><div class="name">Fly to London Heathrow (T5)</div><div class="sub"><span class="tag">Flight</span> · be airside by ~08:00 · lands 14:30</div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="footnote">
+    <span class="pip hot"></span> orange = the only fixed times. Everything else is a rough estimate — pad it for photos, weather and daylight (it barely gets dark in July).
+  </p>
+</div>
