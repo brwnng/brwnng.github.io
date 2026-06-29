@@ -341,8 +341,8 @@ const DAYS = [
    drive:"~4–4.5h", window:"", booked:"Blue Lagoon 18:00",
    note:{type:"hot", h:"Blue Lagoon booked — 18:00", t:"Work back from 18:00: off Fagradalsfjall by <b>~17:30</b> → start the hike by <b>~12:30</b> → <b>leave Vík by 09:00</b> and keep Seltún &amp; Kleifarvatn quick."}},
   {id:"day6", n:6, dow:"Sun", date:"5 Jul", region:"Departure", color:"var(--d6)", hex:"#64748b",
-   drive:"", window:"", booked:"",
-   note:{type:"plain", h:"Set around your flight", t:"No flight time was recorded — <b>add it</b>. Budget ~30 min to refuel &amp; return the car. The hotel is ~5 min from KEF."}}
+   drive:"", window:"", booked:"Flight 10:20",
+   note:{type:"hot", h:"Flight 10:20 → Heathrow T5", t:"Lands LHR T5 <b>14:30</b>. For an international summer departure, be at KEF by <b>~07:30</b> (≈2h45 before). Return the car by <b>~07:00</b> for refuel + drop-off — the hotel is ~5 min away. Leave by <b>~06:45</b>."}}
 ];
 
 const TRIP = {
@@ -396,8 +396,8 @@ const TRIP = {
     {name:"Keflavík Micro Suites", type:"Stay · night 5", kind:"stay", lat:63.9994406, lng:-22.5494684, note:"Dinner nearby."}
   ],
   day6:[
-    {name:"Keflavík Micro Suites", type:"Start", kind:"start", lat:63.9994406, lng:-22.5494684},
-    {name:"Drop off car — Keflavík Airport", type:"Depart", kind:"stay", lat:63.985, lng:-22.6056, note:"Refuel first if the rental needs a full tank."}
+    {name:"Keflavík Micro Suites", type:"Start", kind:"start", lat:63.9994406, lng:-22.5494684, note:"Leave by ~06:45 — KEF is ~5 min away."},
+    {name:"Keflavík Airport (KEF) — fly home", type:"Depart · Flight", kind:"stay", anchor:"10:20", lat:63.985, lng:-22.6056, note:"Drop the car (refuel first) ~07:00, be airside by ~08:00. Flight 10:20 → London Heathrow T5, lands 14:30."}
   ]
 };
 
