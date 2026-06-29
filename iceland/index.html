@@ -205,7 +205,10 @@
   #sheet.dragging{transition:none;}
   .sheet-grip{padding:14px 0 12px;display:flex;justify-content:center;cursor:grab;flex:none;touch-action:none;}
   .sheet-grip::before{content:"";width:44px;height:6px;border-radius:5px;background:#cdd6d5;}
-  .sheet-head{flex:none;padding:2px 18px 12px;border-bottom:1px solid var(--line);}
+  .sheet-head{flex:none;padding:2px 18px 12px;border-bottom:1px solid var(--line);touch-action:none;cursor:grab;}
+  #sheet.dragging .sheet-head,#sheet.dragging .sheet-grip{cursor:grabbing;}
+  #noteSlot{touch-action:none;cursor:grab;}
+  .sheet-head .navbtn{cursor:pointer;}
   .sh-row{display:flex;align-items:flex-start;gap:10px;}
   .sh-titles{min-width:0;flex:1;}
   .sh-eyebrow{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c,#0e7c86);}
@@ -280,7 +283,7 @@
 
 <section id="sheet" class="hidden" aria-label="Stops">
   <button class="sheet-grip" id="grip" aria-label="Expand or collapse the list" aria-expanded="false"></button>
-  <div class="sheet-head">
+  <div class="sheet-head" id="sheetHead">
     <div class="sh-row">
       <div class="sh-titles">
         <div class="sh-eyebrow" id="shEyebrow">Everything</div>
@@ -705,23 +708,28 @@ function route(){
 function initSheetDrag(){
   const sheet = document.getElementById("sheet");
   const grip = document.getElementById("grip");
-  let dragging=false, startY=0, startPct=58, moved=false, vh=0;
+  // the whole top region is a drag handle: grip + header (title/stats) + note
+  const handles = [grip, document.getElementById("sheetHead"), document.getElementById("noteSlot")];
+  let dragging=false, startY=0, startPct=58, moved=false, vh=0, capEl=null;
   const statePct = ()=> sheetState==="full" ? 0 : 58;
 
-  grip.addEventListener("pointerdown",(e)=>{
+  function onDown(e){
+    // let the Drive button / any link work normally — don't start a drag on them
+    if(e.target.closest && e.target.closest("a, button:not(.sheet-grip)")) return;
     dragging=true; moved=false; vh=window.innerHeight;
     startY=e.clientY; startPct=statePct();
     sheet.classList.add("dragging");
-    if(grip.setPointerCapture) try{ grip.setPointerCapture(e.pointerId); }catch(_){}
-  });
-  grip.addEventListener("pointermove",(e)=>{
+    capEl=e.currentTarget;
+    if(capEl.setPointerCapture) try{ capEl.setPointerCapture(e.pointerId); }catch(_){}
+  }
+  function onMove(e){
     if(!dragging) return;
     const dy=e.clientY-startY;
     if(Math.abs(dy)>5) moved=true;
     const pct=Math.max(0, Math.min(72, startPct + dy/vh*100));
     sheet.style.setProperty("--sheet-y", pct+"%");
     if(e.cancelable) e.preventDefault();
-  });
+  }
   function end(){
     if(!dragging) return;
     dragging=false; sheet.classList.remove("dragging");
@@ -729,8 +737,13 @@ function initSheetDrag(){
     const cur=parseFloat(getComputedStyle(sheet).getPropertyValue("--sheet-y"))||0;
     setSheet(cur < 29 ? "full" : "peek");
   }
-  grip.addEventListener("pointerup", end);
-  grip.addEventListener("pointercancel", end);
+  handles.forEach(h=>{
+    if(!h) return;
+    h.addEventListener("pointerdown", onDown);
+    h.addEventListener("pointermove", onMove);
+    h.addEventListener("pointerup", end);
+    h.addEventListener("pointercancel", end);
+  });
   grip.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setSheet(sheetState==="full"?"peek":"full"); }});
 }
 
