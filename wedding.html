@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Save the Date · Ben &amp; Hannah</title>
+<meta name="description" content="Save the date: Ben and Hannah are getting married on 9 September 2028 in Málaga, Spain.">
+<meta name="robots" content="noindex">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GDVLXGWWW8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag("js", new Date());
+  gtag("config", "G-GDVLXGWWW8");
+</script>
+<link rel="icon" href="assets/img/favicon.png" type="image/png" sizes="24x24">
+<style>
+  /* benbrowning.me/wedding.html. A copy of GitHub/cutout-heads/v2/index.html: edit there, then copy here.
+     v2 (2026-11-09), from Ben's Figma frame "iPhone 18 Pro - 1" (file mfHNLg6lMvPuxFP9Ug0sd1, node 14:6, 402 × 874).
+     ABC Otto (Dinamo) is only installed here as the unlicensed trial, so the page uses that installed copy and never
+     ships the font files. Anyone without it sees Georgia. Add licensed WOFF2s to the src lists once bought. */
+  @font-face { font-family: "Otto"; font-style: normal; font-weight: 400; src: local("ABC Otto Unlicensed Trial Regular"), local("ABCOttoUnlicensedTrial-Regular"); }
+  @font-face { font-family: "Otto"; font-style: italic; font-weight: 400; src: local("ABC Otto Unlicensed Trial Regular Italic"), local("ABCOttoUnlicensedTrial-RegularItalic"); }
+
+  :root {
+    --paper: #fff;
+    --ink: #111;
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Otto", Georgia, serif;
+    font-synthesis: none;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .card {
+    padding: 129px 24px 120px;    /* the title's first line sits 130px down the frame */
+  }
+
+  /* Save the Date / 9 September 2028 / in Málaga, Spain. — 20px lines on a 26px step */
+  .title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+  }
+  .title span { display: block; }
+  .title .the { font-size: 14px; line-height: 0; }   /* the small italic "the" on the same baseline, without stretching its line */
+
+  /* the three paragraphs: a 309px centred block starting 273px down, a blank line between each */
+  .copy {
+    max-width: 309px;
+    margin: 66px auto 0;
+    font-size: 16px;
+    line-height: 1.2;              /* ABC Otto's own "normal" */
+  }
+  .copy p { margin: 0; }
+  .copy p + p { margin-top: 1.2em; }
+</style>
+</head>
+<body>
+<main class="card">
+  <h1 class="title">
+    <span>Save <i class="the">the</i> Date</span>
+    <span>9 September 2028</span>
+    <span>in <i>Málaga, Spain.</i></span>
+  </h1>
+  <div class="copy">
+    <p>We’d love you to join us for our wedding and stay with us at Hotel Fuente del Sol.</p>
+    <p>We’ve set aside a room for you, with the option to stay from Friday 8 to Monday 11 September</p>
+    <p>There’ll be a small welcome gathering on Friday and a pool party on Sunday, so we hope you can make a weekend of it!</p>
+  </div>
+</main>
+</body>
+</html>
