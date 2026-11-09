@@ -94,6 +94,7 @@
     --band: #ebe8ff;                /* lands near #ded9ef: the reference band's chroma and hue (oklch 0.03, 292°) */
     --violet: #645275;              /* the reference's muted purple ink, darkened for 16px text: 6:1 on the paper */
     --violet-rule: #87789b;         /* rules, near the reference's own purple ink */
+    --violet-ink: #513d66;          /* the rows' text: a deeper purple (Ben), ~7.9:1 as printed on the band */
     margin: 1.9em auto 0;
     border-collapse: separate;
     border-spacing: 0 4px;          /* the paper between the bands */
@@ -123,7 +124,7 @@
     color: var(--violet);
     border-bottom: 1px solid var(--violet-rule);   /* 1px, not 0.75: thinner lines broke up under the ink filter */
   }
-  .prices tbody td { background: var(--band); }
+  .prices tbody td { background: var(--band); color: var(--violet-ink); }
   .prices :is(th, td):first-child { text-align: left; }
   .prices :is(th, td):not(:first-child) { text-align: right; }
 
