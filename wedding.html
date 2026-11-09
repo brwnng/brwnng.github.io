@@ -79,7 +79,7 @@
     line-height: 1.2;              /* ABC Otto's own "normal" */
   }
   .copy p { max-width: 318px; margin: 0 auto; text-wrap: pretty; }   /* no lone word on a last line (Ben, 2026-11-09) */
-  .copy p + p { margin-top: 1.2em; }
+  .copy p + p { margin-top: calc(1.2em + 6px); }   /* the design's blank line, plus 6px (Ben, 2026-11-09) */
   .nobr { white-space: nowrap; }   /* number ranges never split at the dash */
 
   /* The prices, set like a table in an academic paper (booktabs): no vertical lines, a heavier rule above and
@@ -156,7 +156,7 @@
 
   /* Phones and tablets: on Ben's phone the laptop's filter read "2–3% too fuzzy" (2026-11-09). Switching it off
      went too far (the printed look went with it), so touch screens get #ink-touch: the same three steps, with the
-     edge roughness at ~60% and the softening at ~55% of the laptop's, and the same uneven ink density. */
+     edge roughness at 50% and the softening at ~46% of the laptop's, and the same uneven ink density. */
   @media (hover: none) and (pointer: coarse) {
     .printed .title,
     .printed .copy { filter: url(#ink-touch); }
@@ -197,11 +197,12 @@
     <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.75 0 0 0 1.3" result="density"/>
     <feComposite in="soft" in2="density" operator="in"/>
   </filter>
-  <!-- Touch screens: the same, gentler (edges nudged 0.55 instead of 0.9, softened 0.16px instead of 0.28px). -->
+  <!-- Touch screens: the same, gentler (edges nudged 0.45 instead of 0.9, softened 0.13px instead of 0.28px;
+       Ben, 2026-11-09: "about 3% less fuzzy" than the first phone version, 0.55 / 0.16). -->
   <filter id="ink-touch" x="-3%" y="-8%" width="106%" height="116%" color-interpolation-filters="sRGB">
     <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="edge"/>
-    <feDisplacementMap in="SourceGraphic" in2="edge" scale="0.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-    <feGaussianBlur in="rough" stdDeviation="0.16" result="soft"/>
+    <feDisplacementMap in="SourceGraphic" in2="edge" scale="0.45" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feGaussianBlur in="rough" stdDeviation="0.13" result="soft"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.21" numOctaves="3" seed="4" result="mottle"/>
     <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.75 0 0 0 1.3" result="density"/>
     <feComposite in="soft" in2="density" operator="in"/>
