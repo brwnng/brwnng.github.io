@@ -48,7 +48,8 @@
   }
 
   .card {
-    padding: 129px 24px 120px;    /* the title's first line sits 130px down the frame */
+    /* the design's 130px top (now 10% less: the title's first line sits ~117px down) and 24px sides (now 22px) */
+    padding: 116px 22px 120px;
   }
 
   /* Save the Date / 9 September 2028 / in Málaga, Spain. — on the design's line step (26px at 20px) */
@@ -68,9 +69,10 @@
     vertical-align: calc(0.35 * var(--title) - 0.358 * var(--the) - 1px);   /* then 1px lower, by eye (Ben) */
   }
 
-  /* the three paragraphs: a 309px centred block starting 273px down, a blank line between each */
+  /* the three paragraphs: a centred block 66px below the title, a blank line between each. The design's 309px
+     column, widened so the space either side of it on a 402px phone is ~10% less (Ben, 2026-11-09): 46.5 → 42px */
   .copy {
-    max-width: 309px;
+    max-width: 318px;
     margin: 66px auto 0;
     font-size: var(--copy);
     line-height: 1.2;              /* ABC Otto's own "normal" */
@@ -102,6 +104,20 @@
   .printed .copy {
     filter: url(#ink);
     mix-blend-mode: multiply;
+  }
+
+  /* Phones and tablets: on Ben's phone the filter's softening read as fuzz ("2–3% too fuzzy", 2026-11-09), though
+     the laptop was right. So on touch screens the ink drops the filter, keeping the glyphs vector-sharp, and keeps
+     only its uneven density: the same noise as the filter's, applied as a mask. */
+  @media (hover: none) and (pointer: coarse) {
+    .printed .title,
+    .printed .copy {
+      filter: none;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.21' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.75 0 0 0 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.21' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.75 0 0 0 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
+      -webkit-mask-size: 240px 240px;
+      mask-size: 240px 240px;
+    }
   }
 
   /* show-through: the back of the page, mirrored and barely there (the hotel copy, as if printed on the reverse) */
