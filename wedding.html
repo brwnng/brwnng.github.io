@@ -154,18 +154,12 @@
     mix-blend-mode: multiply;
   }
 
-  /* Phones and tablets: on Ben's phone the filter's softening read as fuzz ("2–3% too fuzzy", 2026-11-09), though
-     the laptop was right. So on touch screens the ink drops the filter, keeping the glyphs vector-sharp, and keeps
-     only its uneven density: the same noise as the filter's, applied as a mask. */
+  /* Phones and tablets: on Ben's phone the laptop's filter read "2–3% too fuzzy" (2026-11-09). Switching it off
+     went too far (the printed look went with it), so touch screens get #ink-touch: the same three steps, with the
+     edge roughness at ~60% and the softening at ~55% of the laptop's, and the same uneven ink density. */
   @media (hover: none) and (pointer: coarse) {
     .printed .title,
-    .printed .copy {
-      filter: none;
-      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.21' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.75 0 0 0 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
-      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.21' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.75 0 0 0 1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
-      -webkit-mask-size: 240px 240px;
-      mask-size: 240px 240px;
-    }
+    .printed .copy { filter: url(#ink-touch); }
   }
 
   /* show-through: the back of the page, mirrored and barely there (the hotel copy, as if printed on the reverse) */
@@ -199,6 +193,15 @@
     <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="edge"/>
     <feDisplacementMap in="SourceGraphic" in2="edge" scale="0.9" xChannelSelector="R" yChannelSelector="G" result="rough"/>
     <feGaussianBlur in="rough" stdDeviation="0.28" result="soft"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.21" numOctaves="3" seed="4" result="mottle"/>
+    <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.75 0 0 0 1.3" result="density"/>
+    <feComposite in="soft" in2="density" operator="in"/>
+  </filter>
+  <!-- Touch screens: the same, gentler (edges nudged 0.55 instead of 0.9, softened 0.16px instead of 0.28px). -->
+  <filter id="ink-touch" x="-3%" y="-8%" width="106%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="edge"/>
+    <feDisplacementMap in="SourceGraphic" in2="edge" scale="0.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feGaussianBlur in="rough" stdDeviation="0.16" result="soft"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.21" numOctaves="3" seed="4" result="mottle"/>
     <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.75 0 0 0 1.3" result="density"/>
     <feComposite in="soft" in2="density" operator="in"/>
