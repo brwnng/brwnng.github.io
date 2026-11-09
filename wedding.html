@@ -74,26 +74,35 @@
   /* the paragraphs: a centred block 66px below the title, a blank line between each. The design's 309px
      column, widened so the space either side of it on a 402px phone is ~10% less (Ben, 2026-11-09): 46.5 → 42px */
   .copy {
-    max-width: 318px;
-    margin: 66px auto 0;
+    margin: 66px auto 0;           /* the full card width, so the table (wider than the text) stays inside the box the ink effects cover */
     font-size: var(--copy);
     line-height: 1.2;              /* ABC Otto's own "normal" */
   }
-  .copy p { margin: 0; }
+  .copy p { max-width: 318px; margin: 0 auto; }
   .copy p + p { margin-top: 1.2em; }
   .nobr { white-space: nowrap; }   /* number ranges never split at the dash */
 
-  /* The prices, set like a table in an academic paper (booktabs): no vertical lines and no shading, a heavier rule
-     above and below, a thin one under the header, extra air inside the rules, figures right-aligned in equal widths,
-     and the caption above. */
+  /* The prices, set like a table in an academic paper (booktabs): no vertical lines, a heavier rule above and
+     below, a thin one under the header, figures right-aligned in equal widths, and the caption above. Each row sits
+     on a lavender band with paper showing between, after a printed chart Ben shared (2026-11-09): its bands are
+     #e3e0f6 on #f1f1fd paper, ~34px tall with 5px gaps. Here the band is a tint multiplied into the paper (the
+     .copy blend), landing near #e3e0ef with the grain showing through, and the gap is the same share of a row. */
   .prices {
+    /* as wide as it needs: a touch wider than the text, centred on it */
+    width: max-content;
+    max-width: 100%;
+    --band: #ebe8ff;                /* lands near #ded9ef: the reference band's chroma and hue (oklch 0.03, 292°) */
+    --violet: #645275;              /* the reference's muted purple ink, darkened for 16px text: 6:1 on the paper */
+    --violet-rule: #87789b;         /* rules, near the reference's own purple ink */
     margin: 1.9em auto 0;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 4px;          /* the paper between the bands */
+    padding: 1px 0;
     font-size: var(--table);
     line-height: 1.25;
     font-variant-numeric: lining-nums tabular-nums;
-    border-top: 1.25px solid var(--ink);
-    border-bottom: 1.25px solid var(--ink);
+    border-top: 1.25px solid var(--violet-rule);
+    border-bottom: 1.25px solid var(--violet-rule);
   }
   .prices caption {
     caption-side: top;
@@ -101,12 +110,21 @@
     font-size: var(--caption);
   }
   .prices th,
-  .prices td { padding: 0.28em 0.9em; font-weight: 400; }
-  .prices thead th { padding-top: 0.5em; padding-bottom: 0.45em; border-bottom: 0.75px solid var(--ink); }
-  .prices tbody tr:first-child td { padding-top: 0.5em; }
-  .prices tbody tr:last-child td { padding-bottom: 0.5em; }
-  .prices :is(th, td):first-child { text-align: left; padding-left: 0.15em; }
-  .prices :is(th, td):last-child { text-align: right; padding-right: 0.15em; }
+  .prices td { padding: 0.3em 0.5em; font-weight: 400; }
+  .prices td,
+  .prices th { white-space: nowrap; }   /* one line each; the two price headers break in two by design */
+  @media (max-width: 389px) { .prices :is(th, td) { padding-inline: 0.35em; } }   /* 375px phones: a little tighter */
+  @media (max-width: 369px) { .prices th { white-space: normal; } }               /* narrow phones: headers wrap */
+  .prices thead th {
+    padding-top: 0.45em;
+    padding-bottom: 0.45em;
+    vertical-align: bottom;          /* headers that wrap sit on a shared baseline, as in a paper */
+    color: var(--violet);
+    border-bottom: 1px solid var(--violet-rule);   /* 1px, not 0.75: thinner lines broke up under the ink filter */
+  }
+  .prices tbody td { background: var(--band); }
+  .prices :is(th, td):first-child { text-align: left; }
+  .prices :is(th, td):not(:first-child) { text-align: right; }
 
   .verso { display: none; }
 
@@ -206,18 +224,20 @@
     <p>There’ll be a small welcome gathering on Friday and a pool party on Sunday, so we hope you can make a weekend of it!</p>
     <p>We’d love to have you stay with us over our wedding weekend, from <span class="nobr">8–11</span> September 2028.</p>
     <p>Below are our proposed guest package prices, based on two people sharing a room. They include accommodation, breakfast for all mornings, &amp; pool party food on Sunday.</p>
+    <!-- "Total for 3 nights": the room for 3 nights, two people (per person/night × 6), converted at the ECB
+         reference rate on 2026-11-09, €1 = £0.8343, and rounded to the nearest £5: €510 → ~£425 … €750 → ~£625 -->
     <table class="prices">
       <caption><i>Table 1.</i> Proposed guest package prices.</caption>
       <thead>
-        <tr><th scope="col">Room type</th><th scope="col">Per person/night</th></tr>
+        <tr><th scope="col">Room type</th><th scope="col">Per person/<br>night</th><th scope="col">Total for<br>3 nights</th></tr>
       </thead>
       <tbody>
-        <tr><td>Económica</td><td>€85</td></tr>
-        <tr><td>Standard</td><td>€95</td></tr>
-        <tr><td>Standard Superior</td><td>€105</td></tr>
-        <tr><td>Junior Suite</td><td>€110</td></tr>
-        <tr><td>Suite</td><td>€120</td></tr>
-        <tr><td>Bungalow Deluxe</td><td>€125</td></tr>
+        <tr><td>Económica</td><td>€85</td><td>~£425</td></tr>
+        <tr><td>Standard</td><td>€95</td><td>~£475</td></tr>
+        <tr><td>Standard Superior</td><td>€105</td><td>~£525</td></tr>
+        <tr><td>Junior Suite</td><td>€110</td><td>~£550</td></tr>
+        <tr><td>Suite</td><td>€120</td><td>~£600</td></tr>
+        <tr><td>Bungalow Deluxe</td><td>€125</td><td>~£625</td></tr>
       </tbody>
     </table>
   </div>
