@@ -78,7 +78,7 @@
     font-size: var(--copy);
     line-height: 1.2;              /* ABC Otto's own "normal" */
   }
-  .copy p { max-width: 318px; margin: 0 auto; }
+  .copy p { max-width: 318px; margin: 0 auto; text-wrap: pretty; }   /* no lone word on a last line (Ben, 2026-11-09) */
   .copy p + p { margin-top: 1.2em; }
   .nobr { white-space: nowrap; }   /* number ranges never split at the dash */
 
@@ -106,6 +106,7 @@
   }
   .prices caption {
     caption-side: top;
+    text-wrap: pretty;
     padding-bottom: 0.7em;
     font-size: var(--caption);
   }
