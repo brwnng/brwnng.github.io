@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="printed">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,10 @@
   gtag("config", "G-GDVLXGWWW8");
 </script>
 <link rel="icon" href="assets/img/favicon.png" type="image/png" sizes="24x24">
+<script>
+  // ?plain shows the page without the printed look, for comparison
+  if (new URLSearchParams(location.search).has('plain')) document.documentElement.classList.remove('printed');
+</script>
 <style>
   /* benbrowning.me/wedding.html. A copy of GitHub/cutout-heads/v2/index.html: edit there, then copy here.
      v2 (2026-11-09), from Ben's Figma frame "iPhone 18 Pro - 1" (file mfHNLg6lMvPuxFP9Ug0sd1, node 14:6, 402 × 874).
@@ -26,13 +30,16 @@
   :root {
     --paper: #fff;
     --ink: #111;
+    --title: 22px;                 /* the design's sizes plus 2px each (Ben, 2026-11-09): 20 → 22, 14 → 16, 16 → 18 */
+    --the: 16px;
+    --copy: 18px;
   }
 
   * { box-sizing: border-box; }
   html { background: var(--paper); }
   body {
     margin: 0;
-    background: var(--paper);
+    min-height: 100vh;
     color: var(--ink);
     font-family: "Otto", Georgia, serif;
     font-synthesis: none;
@@ -44,28 +51,105 @@
     padding: 129px 24px 120px;    /* the title's first line sits 130px down the frame */
   }
 
-  /* Save the Date / 9 September 2028 / in Málaga, Spain. — 20px lines on a 26px step */
+  /* Save the Date / 9 September 2028 / in Málaga, Spain. — on the design's line step (26px at 20px) */
   .title {
     margin: 0;
-    font-size: 20px;
+    font-size: var(--title);
     font-weight: 400;
-    line-height: 26px;
+    line-height: 1.3;
   }
   .title span { display: block; }
-  .title .the { font-size: 14px; line-height: 0; }   /* the small italic "the" on the same baseline, without stretching its line */
+  /* The small italic "the", centred on "Save" and "Date": the middle of its ink sits level with the middle of theirs.
+     Measured in ABC Otto: the middle of their ink is 0.35em (of the title size) above the baseline; the middle of
+     the italic "the" is 0.358em of its own size above. line-height 0 stops it stretching the line. */
+  .title .the {
+    font-size: var(--the);
+    line-height: 0;
+    vertical-align: calc(0.35 * var(--title) - 0.358 * var(--the) - 1px);   /* then 1px lower, by eye (Ben) */
+  }
 
   /* the three paragraphs: a 309px centred block starting 273px down, a blank line between each */
   .copy {
     max-width: 309px;
     margin: 66px auto 0;
-    font-size: 16px;
+    font-size: var(--copy);
     line-height: 1.2;              /* ABC Otto's own "normal" */
   }
   .copy p { margin: 0; }
   .copy p + p { margin-top: 1.2em; }
+
+  .verso { display: none; }
+
+  /* ---- the printed look (Ben, 2026-11-09: "I kind of want the website to look printed"), after a scanned
+     book page he shared: paper a little off-white with grain and faint show-through, ink a touch soft and
+     uneven. Measured from his scan: paper #eae4e8, fine grain ±3.4 levels, mottling ±1 level. This sits
+     lighter and subtler than that. Turn it off with ?plain. */
+  .printed {
+    --paper: #faf7f8;              /* the grain layers take it down to about #f1eeef on average */
+    background-color: var(--paper);
+    background-image:
+      /* scanner falloff: the edges a shade darker */
+      radial-gradient(130% 100% at 50% 32%, transparent 60%, rgba(44, 24, 34, 0.035) 100%),
+      /* fine grain: vertical fibres, dark flecks and light ones */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='d' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .32' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .13 0 0 0 0 .17 .16 0 0 0 -.062'/%3E%3C/filter%3E%3Cfilter id='l' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8 .3' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 .2 0 0 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E"),
+      /* mottling: the paper's slow, cloudy unevenness */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .009' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .12 0 0 0 0 .17 .055 0 0 0 -.02'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    background-size: auto, 320px 320px, 900px 900px;
+  }
+
+  /* ink: a touch soft and uneven, multiplied into the paper like real ink (filter defined in the page) */
+  .printed .title,
+  .printed .copy {
+    filter: url(#ink);
+    mix-blend-mode: multiply;
+  }
+
+  /* show-through: the back of the page, mirrored and barely there (the hotel copy, as if printed on the reverse) */
+  .printed .verso {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 50%;
+    width: min(352px, calc(100% - 36px));
+    padding-top: 92px;
+    transform: translateX(-50%) scaleX(-1);
+    text-align: left;
+    font-size: 17px;
+    line-height: 1.34;
+    color: var(--ink);
+    opacity: 0.022;               /* about 3 levels darker than the paper: there if you look */
+    filter: blur(0.9px);
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+  .verso p { margin: 0 0 1.34em; }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- Printed ink. 1: nudge the glyph edges by a hair with fine noise; 2: a little softness, as ink spreads into
+       paper; 3: vary its density so some strokes print lighter, as offset ink does. -->
+  <filter id="ink" x="-3%" y="-8%" width="106%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="11" result="edge"/>
+    <feDisplacementMap in="SourceGraphic" in2="edge" scale="0.9" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feGaussianBlur in="rough" stdDeviation="0.28" result="soft"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.21" numOctaves="3" seed="4" result="mottle"/>
+    <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.75 0 0 0 1.3" result="density"/>
+    <feComposite in="soft" in2="density" operator="in"/>
+  </filter>
+</svg>
+
+<div class="verso" aria-hidden="true">
+  <p>STAY WITH US AT HOTEL FUENTE DEL SOL</p>
+  <p>We’d love to have you stay with us over our wedding weekend, from 8–11 September 2028.</p>
+  <p>Below are our proposed guest package prices, based on two people sharing a room. They include accommodation, breakfast for all mornings, &amp; pool party food on Sunday.</p>
+  <p>Room preferences</p>
+  <p>If a particular room type appeals to you, feel free to let us know. There are limited numbers of each type, but we’ll do our best to accommodate everyone’s preferences.</p>
+  <p>Please arrange your room through us rather than booking directly with the hotel, as we’ve reserved the rooms for the wedding.</p>
+</div>
+
 <main class="card">
   <h1 class="title">
     <span>Save <i class="the">the</i> Date</span>
