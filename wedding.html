@@ -18,6 +18,8 @@
 <script>
   // ?plain shows the page without the printed look, for comparison
   if (new URLSearchParams(location.search).has('plain')) document.documentElement.classList.remove('printed');
+  // the engraving stays hidden until its shader has inked it, so it never flashes up grey first
+  document.documentElement.classList.add('js');
 </script>
 <style>
   /* benbrowning.me/wedding.html. A copy of GitHub/cutout-heads/v2/index.html: edit there, then copy here.
@@ -50,9 +52,27 @@
   }
 
   .card {
-    /* the design's 130px top (now 10% less: the title's first line sits ~117px down) and 24px sides (now 22px) */
-    padding: 116px 22px 120px;
+    /* The design's 130px top (later 10% less, putting the title ~117px down) and 24px sides (now 22px). Since the
+       engraving went on top (2026-11-21), the top space sits above the engraving instead. */
+    padding: 56px 22px 120px;
   }
+
+  /* The engraving at the top: Figma's "Group 3" (node 18:67), stored as greyscale tones by tools/build_art.py and
+     inked by the shader in the script at the end. Its settings live here: two inks, the levels (the engraving's
+     tones run from 0, black, to 1, paper) and the contrast. Try values live by adding ?tune to the address. */
+  .art {
+    --art-ink: var(--ink);         /* the darkest lines: the text's own ink */
+    --art-ink-2: var(--ink);       /* the faintest lines; a second colour here makes it a two-colour print */
+    --art-black: 0.25;             /* tones this dark or darker print as solid ink (the engraving's darkest is ~0.22) */
+    --art-white: 0.95;             /* tones this light or lighter print as bare paper */
+    --art-contrast: 1;             /* 1 = as engraved; higher is punchier, lower is flatter. Solid ink and bare paper stay put */
+    display: block;
+    width: min(300px, 100%);
+    height: auto;
+    margin: 0 auto 44px;
+  }
+  .js .art { opacity: 0; transition: opacity 240ms ease-out; }
+  .js .art.inked { opacity: 1; }
 
   /* Save the Date / 9 September 2028 / in Málaga, Spain. — on the design's line step (26px at 20px) */
   .title {
@@ -147,7 +167,9 @@
     background-size: auto, 320px 320px, 900px 900px;
   }
 
-  /* ink: a touch soft and uneven, multiplied into the paper like real ink (filter defined in the page) */
+  /* ink: a touch soft and uneven, multiplied into the paper like real ink (filter defined in the page). The
+     engraving gets exactly the same treatment as the text. */
+  .printed .art,
   .printed .title,
   .printed .copy {
     filter: url(#ink);
@@ -158,6 +180,7 @@
      went too far (the printed look went with it), so touch screens get #ink-touch: the same three steps, with the
      edge roughness at 50% and the softening at ~46% of the laptop's, and the same uneven ink density. */
   @media (hover: none) and (pointer: coarse) {
+    .printed .art,
     .printed .title,
     .printed .copy { filter: url(#ink-touch); }
   }
@@ -183,6 +206,31 @@
     pointer-events: none;
   }
   .verso p { margin: 0 0 1.34em; }
+
+  /* ?tune: live controls for the engraving's shader, with the CSS to paste back above */
+  .tune {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 10;
+    display: grid;
+    gap: 9px;
+    width: 236px;
+    padding: 12px 14px;
+    font: 12px/1.3 system-ui, sans-serif;
+    text-align: left;
+    color: #111;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+  .tune label { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 8px; }
+  .tune input[type=range] { grid-column: 1 / -1; width: 100%; margin: 0; }
+  .tune input[type=color] { width: 38px; height: 22px; padding: 0; border: 0; background: none; }
+  .tune span { font-variant-numeric: tabular-nums; color: #555; }
+  .tune pre { margin: 2px 0 0; font: 11px/1.45 ui-monospace, Menlo, monospace; user-select: all; }
+  .tune button { font: inherit; padding: 5px 8px; color: inherit; background: #fff; border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 6px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -219,6 +267,7 @@
 </div>
 
 <main class="card">
+  <img class="art" src="assets/img/wedding-angel.jpg" width="1200" height="722" alt="">
   <h1 class="title">
     <span>Save <i class="the">the</i> Date</span>
     <span>9 September 2028</span>
@@ -248,5 +297,191 @@
     </table>
   </div>
 </main>
+<script>
+/* The engraving's shader. tools/build_art.py stores the engraving as greyscale tones (0 black … 1 paper); this
+   fragment shader turns each tone into ink in three steps: levels (--art-black prints solid, --art-white prints
+   nothing), an S-curve for --art-contrast that leaves solid ink and bare paper alone, then the colour, running from
+   --art-ink-2 in the faintest lines to --art-ink in the darkest. How much ink a pixel gets becomes its alpha, so the
+   paper shows through and the ink filter and multiply treat the engraving exactly as they treat the text.
+   It renders once (and again on each ?tune change) into a PNG that replaces the <img>'s source: an <img> takes the
+   SVG ink filter reliably in every browser, which a live WebGL canvas may not. Without WebGL, the grey original shows. */
+(() => {
+  const art = document.querySelector('.art');
+  if (!art) return;
+  const reveal = () => art.classList.add('inked');
+  setTimeout(reveal, 4000);   // whatever happens, never leave it hidden
+
+  const VERTEX = `
+    attribute vec2 p;
+    varying vec2 uv;
+    void main() { uv = vec2(p.x, -p.y) * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }`;
+  const FRAGMENT = `
+    precision mediump float;
+    uniform sampler2D tones;
+    uniform vec3 ink, ink2;
+    uniform float black, white, contrast;
+    varying vec2 uv;
+    void main() {
+      float tone = texture2D(tones, uv).r;
+      float c = clamp((white - tone) / max(white - black, 0.001), 0.0, 1.0);   // levels: how much ink, 0 to 1
+      float a = pow(c, contrast), b = pow(1.0 - c, contrast);
+      c = a / max(a + b, 0.00001);                                            // contrast: an S-curve, ends fixed
+      gl_FragColor = vec4(mix(ink2, ink, c), c);
+    }`;
+
+  // any CSS colour → [r, g, b] from 0 to 1, by painting it
+  const probe = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  const rgb = (css) => {
+    probe.clearRect(0, 0, 1, 1);
+    probe.fillStyle = '#000';
+    probe.fillStyle = css.trim() || '#000';
+    probe.fillRect(0, 0, 1, 1);
+    return Array.from(probe.getImageData(0, 0, 1, 1).data.slice(0, 3), (v) => v / 255);
+  };
+  const settings = () => {
+    const cs = getComputedStyle(art);
+    const num = (name, fallback) => {
+      const v = parseFloat(cs.getPropertyValue(name));
+      return Number.isFinite(v) ? v : fallback;
+    };
+    return {
+      ink: rgb(cs.getPropertyValue('--art-ink')),
+      ink2: rgb(cs.getPropertyValue('--art-ink-2')),
+      black: num('--art-black', 0.25),
+      white: num('--art-white', 0.95),
+      contrast: Math.max(0.05, num('--art-contrast', 1)),
+    };
+  };
+
+  let gl, canvas, uniforms, shown;
+  function start() {
+    canvas = document.createElement('canvas');
+    canvas.width = art.naturalWidth;
+    canvas.height = art.naturalHeight;
+    gl = canvas.getContext('webgl', { premultipliedAlpha: false, preserveDrawingBuffer: true, antialias: false });
+    if (!gl) return reveal();
+
+    const program = gl.createProgram();
+    for (const [type, source] of [[gl.VERTEX_SHADER, VERTEX], [gl.FRAGMENT_SHADER, FRAGMENT]]) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+      gl.attachShader(program, shader);
+    }
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+    gl.useProgram(program);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);   // one triangle over the whole canvas
+    const p = gl.getAttribLocation(program, 'p');
+    gl.enableVertexAttribArray(p);
+    gl.vertexAttribPointer(p, 2, gl.FLOAT, false, 0, 0);
+
+    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, art);   // the greyscale original, still in the <img>
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
+    uniforms = Object.fromEntries(['ink', 'ink2', 'black', 'white', 'contrast'].map((n) => [n, gl.getUniformLocation(program, n)]));
+    request();
+    if (new URLSearchParams(location.search).has('tune')) tune();
+  }
+
+  // render, then show the result in the <img>; one render at a time, and a change mid-render renders again after
+  let busy = false, again = false;
+  function request() {
+    if (busy) { again = true; return; }
+    busy = true;
+    requestAnimationFrame(paint);
+  }
+  function paint() {
+    const s = settings();
+    gl.uniform3fv(uniforms.ink, s.ink);
+    gl.uniform3fv(uniforms.ink2, s.ink2);
+    gl.uniform1f(uniforms.black, s.black);
+    gl.uniform1f(uniforms.white, s.white);
+    gl.uniform1f(uniforms.contrast, s.contrast);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    canvas.toBlob((blob) => {
+      const done = () => {
+        art.onload = art.onerror = null;
+        reveal();
+        busy = false;
+        if (again) { again = false; request(); }
+      };
+      if (!blob) return done();
+      const previous = shown;
+      shown = URL.createObjectURL(blob);
+      art.onload = art.onerror = () => { if (previous) URL.revokeObjectURL(previous); done(); };
+      art.src = shown;
+    }, 'image/png');
+  }
+
+  // ?tune: a small panel bound to the CSS variables, which prints the lines to paste back into .art
+  function tune() {
+    const fields = [
+      ['--art-ink', 'Dark ink'],
+      ['--art-ink-2', 'Light ink'],
+      ['--art-black', 'Black point', 0, 1, 0.01],
+      ['--art-white', 'White point', 0, 1, 0.01],
+      ['--art-contrast', 'Contrast', 0.2, 4, 0.05],
+    ];
+    const cs = getComputedStyle(art);
+    const hex = (c) => '#' + c.map((v) => Math.round(v * 255).toString(16).padStart(2, '0')).join('');
+    const panel = document.createElement('form');
+    panel.className = 'tune';
+    panel.setAttribute('aria-label', 'Engraving settings');
+    const css = document.createElement('pre');
+    const write = () => { css.textContent = fields.map(([name]) => `${name}: ${cs.getPropertyValue(name).trim()};`).join('\n'); };
+    for (const [name, label, min, max, step] of fields) {
+      const row = document.createElement('label');
+      const input = document.createElement('input');
+      input.name = name;
+      if (min === undefined) {
+        input.type = 'color';
+        input.value = hex(rgb(cs.getPropertyValue(name)));
+        row.append(label, input);
+      } else {
+        input.type = 'range';
+        Object.assign(input, { min, max, step });
+        input.value = parseFloat(cs.getPropertyValue(name));
+        const readout = document.createElement('span');
+        readout.textContent = input.value;
+        input.addEventListener('input', () => { readout.textContent = input.value; });
+        row.append(label, readout, input);
+      }
+      input.addEventListener('input', () => { art.style.setProperty(name, input.value); write(); request(); });
+      panel.append(row);
+    }
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.textContent = 'Copy CSS';
+    copy.addEventListener('click', () => {
+      navigator.clipboard.writeText(css.textContent).then(
+        () => { copy.textContent = 'Copied'; },
+        () => { copy.textContent = 'Select the text above to copy'; });
+      setTimeout(() => { copy.textContent = 'Copy CSS'; }, 1600);
+    });
+    write();
+    panel.append(css, copy);
+    document.body.append(panel);
+  }
+
+  const begin = () => {
+    try { start(); } catch (error) { console.warn('engraving shader:', error); reveal(); }
+  };
+  if (art.complete && art.naturalWidth) begin();
+  else {
+    art.addEventListener('load', begin, { once: true });
+    art.addEventListener('error', reveal, { once: true });
+  }
+})();
+</script>
 </body>
 </html>
